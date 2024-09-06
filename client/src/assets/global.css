@@ -30,4 +30,29 @@
   .text-underline-hover:hover{
     text-decoration: underline !important;
   }
+
+  .up-on-hover{
+    position: relative;
+    transition: transform 500ms;
+    
+  }
+
+  .up-on-hover:hover{
+    position: relative;
+    transform: translateY(-5px);
+  }
+
+  .justify-content-strech{
+    justify-content: stretch;
+  }
+
+  @media only screen and (min-width: 300px)  {
+      /* More smaller */
+      .ms-col-6{
+        width: 50%;
+        flex: 0 0 auto;
+        padding: 0.5rem;
+     }
+  }
+
 }

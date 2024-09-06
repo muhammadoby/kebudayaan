@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import AuthLayout from '@/components/authLayout.vue';
 const isPasswordVisible = ref(false);
 const errors = ref({
     name: ref<string>(),
