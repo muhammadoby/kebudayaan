@@ -1,35 +1,45 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
+import { navMainStore } from '@/stores/navMain';
 import NavSearch from './NavSearch.vue';
 const navSearch = ref<ComponentExposed<typeof NavSearch>>();
 
+const state = navMainStore();
+const nav = ref<HTMLElement>();
 const activeNavSearch = () => {
     navSearch.value?.toggleActive(true);
 }
+onMounted(async () => {
+    await nextTick();
+    state.height = nav.value?.clientHeight || 0;
+});
+
 
 </script>
 <template>
-    <nav class="nav gap-4 align-items-center">
-        <div class="logo">
-        </div>
-        <div class="flex gap-4 nav-link">
-            <div>
-                <RouterLink to="/" class="router-link">
-                    Home
-                </RouterLink>
+    <nav class="fixed nav w-full" ref="nav">
+        <div class="navbar-nav  w-full gap-4 align-items-center">
+            <div class="logo">
             </div>
-            <div>Budaya</div>
-            <div>Acara</div>
-            <div>Contact</div>
-        </div>
-        <div class="justify-content-end w-full flex gap-4 align-items-center">
-            <div class="search relative " @click="activeNavSearch">
-                <i class="bi bi-search  search-icon"></i>
-                <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
+            <div class="flex gap-4 nav-link">
+                <div>
+                    <RouterLink to="/" class="router-link">
+                        Home
+                    </RouterLink>
+                </div>
+                <div>Budaya</div>
+                <div>Acara</div>
+                <div>Contact</div>
             </div>
-            <div>Login</div>
-            <div class="nav-register">Register</div>
+            <div class="justify-content-end w-full flex gap-4 align-items-center">
+                <div class="search relative " @click="activeNavSearch">
+                    <i class="bi bi-search  search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
+                </div>
+                <div>Login</div>
+                <div class="nav-register">Register</div>
+            </div>
         </div>
     </nav>
     <NavSearch ref="navSearch" />
@@ -42,7 +52,13 @@ const activeNavSearch = () => {
 }
 
 .nav {
+    z-index: 25;
+    background-color: white;
+}
+
+.navbar-nav {
     display: flex;
+    z-index: 50;
     font-size: 1.1rem;
     align-items: center;
     padding: 12px 28px;

@@ -11,59 +11,57 @@ const togglePassword = () => {
 }
 </script>
 <template>
-    <AuthLayout>
-        <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center pt-5">
-            <h1 class="login-title text-center">
-                Login
-            </h1>
-            <h2 class="login-subtitle">
-                Welcome back, login to learn and explore more about Indonesian culture.
-            </h2>
-            <form class="login-form pb-6">
-                <div class="input-group">
-                    <div class="login-label-input">email</div>
-                    <input class="login-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
-                    <div class="input-error-text" v-if="errors.email">
-                        {{ errors.email }}
-                    </div>
+    <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center pt-5">
+        <h1 class="login-title text-center">
+            Login
+        </h1>
+        <h2 class="login-subtitle">
+            Welcome back, login to learn and explore more about Indonesian culture.
+        </h2>
+        <form class="login-form pb-6">
+            <div class="input-group">
+                <div class="login-label-input">email</div>
+                <input class="login-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
+                <div class="input-error-text" v-if="errors.email">
+                    {{ errors.email }}
                 </div>
-                <div class="input-group">
-                    <div class="login-label-input">password</div>
-                    <div class="input-password-wrapper">
-                        <input class="login-input input-password" placeholder="Enter your password"
-                            :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
-                        <button class="password-toggler" type="button" @click="togglePassword">
-                            <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
-                            <i v-if="isPasswordVisible" class="bi bi-eye-slash ic-password"></i>
-                        </button>
-                    </div>
-                    <div class="input-error-text" v-if="errors.password">
-                        {{ errors.password }}
-                    </div>
-                </div>
-                <div>
-                    <button class="login-submit-btn">
-                        Login
+            </div>
+            <div class="input-group">
+                <div class="login-label-input">password</div>
+                <div class="input-password-wrapper">
+                    <input class="login-input input-password" placeholder="Enter your password"
+                        :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
+                    <button class="password-toggler" type="button" @click="togglePassword">
+                        <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
+                        <i v-if="isPasswordVisible" class="bi bi-eye-slash ic-password"></i>
                     </button>
                 </div>
-                <div class="text-center my-2">
-                    or
+                <div class="input-error-text" v-if="errors.password">
+                    {{ errors.password }}
                 </div>
-                <div class="login-google">
-                    <img src="@/assets/image/icon/ic-color-google.svg" class="ic-register" />
-                    <div class="pl-2 register-google-text">
-                        Login with google
-                    </div>
+            </div>
+            <div>
+                <button class="login-submit-btn">
+                    Login
+                </button>
+            </div>
+            <div class="text-center my-2">
+                or
+            </div>
+            <div class="login-google">
+                <img src="@/assets/image/icon/ic-color-google.svg" class="ic-register" />
+                <div class="pl-2 register-google-text">
+                    Login with google
                 </div>
-                <div class="text-register-question">
-                    dont have account?
-                    <RouterLink to="/register" class="color-primary no-underline text-underline-hover">
-                        Register now
-                    </RouterLink>
-                </div>
-            </form>
-        </div>
-    </AuthLayout>
+            </div>
+            <div class="text-register-question">
+                dont have account?
+                <RouterLink to="/register" class="color-primary no-underline text-underline-hover">
+                    Register now
+                </RouterLink>
+            </div>
+        </form>
+    </div>
 </template>
 <style scoped>
 .login-title {
@@ -110,6 +108,7 @@ const togglePassword = () => {
 .login-input {
     padding: 15px;
     width: 100%;
+    font-family: poppins, sans-serif;
     border-radius: 8px;
     border: transparent;
     background-color: #F2F2F2;

@@ -11,66 +11,64 @@ const togglePassword = () => {
 }
 </script>
 <template>
-    <AuthLayout>
-        <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center py-3">
-            <h1 class="register-title text-center lg:mt-0">
-                Register
-            </h1>
-            <h2 class="login-subtitle">
-                Join us here to learn and explore more about Indonesian culture.
-            </h2>
-            <form class="register-form pb-4">
-                <div class="input-group">
-                    <div class="register-label-input">username</div>
-                    <input class="register-input" :class="{ 'is-error': errors.name }" placeholder="Enter your name" />
-                    <div class="input-error-text" v-if="errors.name">
-                        {{ errors.name }}
-                    </div>
+    <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center py-3">
+        <h1 class="register-title text-center lg:mt-0">
+            Register
+        </h1>
+        <h2 class="login-subtitle">
+            Join us here to learn and explore more about Indonesian culture.
+        </h2>
+        <form class="register-form pb-4">
+            <div class="input-group">
+                <div class="register-label-input">username</div>
+                <input class="register-input" :class="{ 'is-error': errors.name }" placeholder="Enter your name" />
+                <div class="input-error-text" v-if="errors.name">
+                    {{ errors.name }}
                 </div>
-                <div class="input-group">
-                    <div class="register-label-input">email</div>
-                    <input class="register-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
-                    <div class="input-error-text" v-if="errors.email">
-                        {{ errors.email }}
-                    </div>
+            </div>
+            <div class="input-group">
+                <div class="register-label-input">email</div>
+                <input class="register-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
+                <div class="input-error-text" v-if="errors.email">
+                    {{ errors.email }}
                 </div>
-                <div class="input-group">
-                    <div class="register-label-input">password</div>
-                    <div class="input-password-wrapper">
-                        <input class="register-input input-password" placeholder="Enter your password"
-                            :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
-                        <button class="password-toggler" type="button" @click="togglePassword">
-                            <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
-                            <i v-if="isPasswordVisible" class="bi bi-eye-slash ic-password"></i>
-                        </button>
-                    </div>
-                    <div class="input-error-text" v-if="errors.password">
-                        {{ errors.password }}
-                    </div>
-                </div>
-                <div>
-                    <button class="register-submit-btn">
-                        Register
+            </div>
+            <div class="input-group">
+                <div class="register-label-input">password</div>
+                <div class="input-password-wrapper">
+                    <input class="register-input input-password" placeholder="Enter your password"
+                        :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
+                    <button class="password-toggler" type="button" @click="togglePassword">
+                        <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
+                        <i v-if="isPasswordVisible" class="bi bi-eye-slash ic-password"></i>
                     </button>
                 </div>
-                <div class="text-center my-2">
-                    or
+                <div class="input-error-text" v-if="errors.password">
+                    {{ errors.password }}
                 </div>
-                <div class="register-google">
-                    <img src="@/assets/image/icon/ic-color-google.svg" class="ic-register" />
-                    <div class="pl-2 register-google-text">
-                        Join with google
-                    </div>
+            </div>
+            <div>
+                <button class="register-submit-btn">
+                    Register
+                </button>
+            </div>
+            <div class="text-center my-2">
+                or
+            </div>
+            <div class="register-google">
+                <img src="@/assets/image/icon/ic-color-google.svg" class="ic-register" />
+                <div class="pl-2 register-google-text">
+                    Join with google
                 </div>
-                <div class="text-register-question">
-                    Already have an account?
-                    <RouterLink to="/login" class="color-primary no-underline text-underline-hover">
-                        Login now
-                    </RouterLink>
-                </div>
-            </form>
-        </div>
-    </AuthLayout>
+            </div>
+            <div class="text-register-question">
+                Already have an account?
+                <RouterLink to="/login" class="color-primary no-underline text-underline-hover">
+                    Login now
+                </RouterLink>
+            </div>
+        </form>
+    </div>
 </template>
 <style scoped>
 .register-title {
@@ -119,6 +117,7 @@ const togglePassword = () => {
     width: 100%;
     border-radius: 8px;
     border: transparent;
+    font-family: poppins, sans-serif;
     background-color: #F2F2F2;
 }
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 const isSearchEmpty = ref(true);
 const searchModel = defineModel('searchModel');
 const isActive = ref(false);
@@ -16,6 +16,13 @@ const backdropClick = (evt: Event) => {
     }
 }
 
+onUnmounted(() => {
+    document.body.classList.remove('overflow-hidden');
+});
+
+watch(isActive, () => {
+    document.body.classList.toggle('overflow-hidden', isActive.value);
+});
 defineExpose({
     toggleActive,
     searchModel
@@ -29,7 +36,7 @@ defineExpose({
                     <i class="bi bi-search search-icon"></i>
                     <input class="search-input" placeholder="Search" @input="inputChange" v-model="searchModel" />
                 </div>
-                <div class="search-cancel" @click="toggleActive(false)">Cancel</div>
+                <div class="search-cancel lg:hidden" @click="toggleActive(false)">Cancel</div>
             </div>
 
             <template v-if="isSearchEmpty">
@@ -69,11 +76,12 @@ defineExpose({
 
 <style scoped>
 .search-card-wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     min-height: 100vh;
+    z-index: 40;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
@@ -147,11 +155,5 @@ defineExpose({
 .search-cancel {
     font-weight: 500;
     display: block;
-}
-
-@media screen and (min-width: 700px) {
-    .search-cancel {
-        display: none;
-    }
 }
 </style>
