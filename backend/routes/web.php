@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return response()->json([
-        'status' => true,
-        'message' => 'Please read the documentation to use this API',
-        'code' => 200
-    ], 200);
-});
+
 require __DIR__ . '/auth.php';

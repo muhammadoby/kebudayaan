@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\SigninController;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function(){
     return response()->json([
         'status' => true,
-        'message' => 'Please read the documentation to use this API',
+        'message' => Inspiring::quotes()[rand(0, 39)],
         'code' => 200
     ], 200);
 });
