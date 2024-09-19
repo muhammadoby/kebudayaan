@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\BookmarkController;
+use App\Http\Controllers\Api\Auth\CultureController;
 use App\Http\Controllers\Api\Auth\EventController;
 use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Auth\RoleUserController;
+use App\Http\Controllers\Api\Auth\TagsController;
 use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\Auth\VerifyEmailController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +33,6 @@ Route::prefix(env("API_VERSION"))->group(function () {
     });
 
     Route::resource('events', EventController::class)->only('index', 'store', 'update', 'destroy');
+    Route::resource('tags', TagsController::class)->only('index', 'store', 'update', 'destroy');
+    Route::resource('cultures', CultureController::class)->only('index', 'store', 'update', 'destroy');
 });

@@ -10,6 +10,7 @@ use Database\Seeders\Role\AdminRoleSeeder;
 use Database\Seeders\Role\UserRoleSeeder;
 use Database\Seeders\Role\WriterRoleSeeder;
 use Database\Seeders\User\AdminSeeder;
+use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,11 +28,8 @@ class DatabaseSeeder extends Seeder
 
             // user
             AdminSeeder::class,
+            UserSeeder::class
         ]);
 
-        $user = User::factory(100)->create();
-        $user->each(function ($user) {
-            $user->assignRole('user');
-        });
     }
 }

@@ -32,6 +32,7 @@ class ProfileController extends Controller
             'email' => 'required|email:dns|unique:user,email,' . $request->user()->id,
             'name' => 'required',
             'phone' => 'required',
+            'password' => 'nullable|confirmed|min:6'
         ]);
 
         if ($validator->fails()) {
@@ -50,16 +51,26 @@ class ProfileController extends Controller
             $user->fill([
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->phone
+                'phone' => $request->phone,
+                'password' => $request->password ? bcrypt($request->password) : $user->password
             ]);
-            $user->save();
+
+            if ($user->isDirty()) {
+                $user->save();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Profile updated',
+                    'data' => $user,
+                    'code' => 200
+                ], 200);
+            }
 
             return response()->json([
-                'status' => true,
-                'message' => 'Profile updated',
-                'data' => $user,
-                'code' => 200
-            ], 200);
+                'status' => false,
+                'message' => 'Profile not updated',
+                'code' => 304
+            ], 304);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -80,7 +91,7 @@ class ProfileController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Profile deleted',
+                'message' => 'User deleted',
                 'code' => 200
             ], 200);
         } catch (\Throwable $th) {
