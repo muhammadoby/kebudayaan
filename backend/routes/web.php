@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\SigninController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('auth/google', [SigninController::class, 'google'])->name('api.signin.google');
+Route::get('auth/google/callback', [SigninController::class, 'googleCallback'])->name('api.signin.google.callback');
 
 require __DIR__ . '/auth.php';

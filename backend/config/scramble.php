@@ -29,7 +29,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => 'Welcome to Rest API documentation',
+        'description' => 'Welcome to Api Documentation, please explore the various endpoints provided. if you have any questions or would like to collaborate, please check out github https://github.com/KapurAjaib/kebudayaan. Thank you',
     ],
 
     /*
@@ -44,7 +44,7 @@ return [
         /*
          * Define the theme of the documentation. Available options are `light` and `dark`.
          */
-        'theme' => 'light',
+        'theme' => 'dark',
 
         /*
          * Hide the `Try It` feature. Enabled by default.

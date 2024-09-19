@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
+Route::get('/', function () {
     return response()->json([
         'status' => true,
         'message' => Inspiring::quotes()[rand(0, 39)],
@@ -26,11 +26,11 @@ Route::get('/', function(){
     ], 200);
 });
 
-Route::prefix(env("API_VERSION"))->middleware('guest')->group(function(){
+Route::prefix(env("API_VERSION"))->middleware('guest')->group(function () {
     Route::post('signin', [SigninController::class, 'auth'])->name('api.signin');
     Route::post('signup', [RegisterController::class, 'register'])->name('api.signup');
     Route::post('forgot-password', [ForgotPasswordController::class, 'send'])->name('user')->middleware('throttle:6,1');
     Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password')->middleware('throttle:6,1');
 });
 
-require __DIR__.'/api/auth/auth.php';
+require __DIR__ . '/api/auth/auth.php';
