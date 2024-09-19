@@ -1,14 +1,34 @@
 <script lang="ts" setup>
+import { submitForm } from '@/service/apiService';
+import axios from 'axios';
 import { ref } from 'vue';
 const isPasswordVisible = ref(false);
 const errors = ref({
     name: ref<string>(),
     email: ref<string>(),
-    password: ref<string>()
+    password: ref<string>(),
+    passwordConfirmation: ref<string>(),
+});
+const formData = ref({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
 });
 const togglePassword = () => {
     isPasswordVisible.value = !isPasswordVisible.value;
 }
+
+const submitRegistrationForm = async () => {
+    const endpoint = 'http://localhost:8000/api/1.0/signup';
+    const response = await submitForm(endpoint, formData.value, errors);
+    if (response) {
+        console.log('Registration successful:', response);
+        alert('Registration successful');
+        window.location.href = '/';
+    }
+}
+
 </script>
 <template>
     <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center py-3">
@@ -18,17 +38,17 @@ const togglePassword = () => {
         <h2 class="login-subtitle">
             Join us here to learn and explore more about Indonesian culture.
         </h2>
-        <form class="register-form pb-4">
+        <form class="register-form pb-4" @submit.prevent="submitRegistrationForm">
             <div class="input-group">
                 <div class="register-label-input">username</div>
-                <input class="register-input" :class="{ 'is-error': errors.name }" placeholder="Enter your name" />
+                <input v-model="formData.name" class="register-input" :class="{ 'is-error': errors.name }" placeholder="Enter your name" />
                 <div class="input-error-text" v-if="errors.name">
                     {{ errors.name }}
                 </div>
             </div>
             <div class="input-group">
                 <div class="register-label-input">email</div>
-                <input class="register-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
+                <input v-model="formData.email" class="register-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
                 <div class="input-error-text" v-if="errors.email">
                     {{ errors.email }}
                 </div>
@@ -36,7 +56,7 @@ const togglePassword = () => {
             <div class="input-group">
                 <div class="register-label-input">password</div>
                 <div class="input-password-wrapper">
-                    <input class="register-input input-password" placeholder="Enter your password"
+                    <input v-model="formData.password" class="register-input input-password" placeholder="Enter your password"
                         :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
                     <button class="password-toggler" type="button" @click="togglePassword">
                         <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
@@ -47,8 +67,16 @@ const togglePassword = () => {
                     {{ errors.password }}
                 </div>
             </div>
+            <div class="input-group">
+                <div class="register-label-input">Confirm Password</div>
+                <input v-model="formData.passwordConfirmation" class="register-input" placeholder="Confirm your password"
+                    :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.passwordConfirmation }" />
+                <div class="input-error-text" v-if="errors.passwordConfirmation">
+                    {{ errors.passwordConfirmation }}
+                </div>
+            </div>
             <div>
-                <button class="register-submit-btn">
+                <button class="register-submit-btn" type="submit">
                     Register
                 </button>
             </div>

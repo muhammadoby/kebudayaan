@@ -5,6 +5,8 @@ import { PrimeVue } from '@primevue/core';
 import App from './App.vue';
 import router from './router';
 import Aura from '@primevue/themes/aura';
+import axios from 'axios';
+
 
 const app = createApp(App);
 
@@ -20,6 +22,7 @@ app.use(PrimeVue, {
         },
     },
 });
+
 
 app.use(createPinia());
 app.use(router);

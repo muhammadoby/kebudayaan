@@ -1,14 +1,31 @@
 <script setup lang="ts">
+import { submitForm } from '@/service/apiService';
 import { ref } from 'vue';
+
 const isPasswordVisible = ref(false);
 const errors = ref({
     name: ref<string>(),
     email: ref<string>(),
-    password: ref<string>()
+    password: ref<string>(),
 });
+const formData = ref({
+    email: '',
+    password: '',
+})
 const togglePassword = () => {
     isPasswordVisible.value = !isPasswordVisible.value;
 }
+
+const submitLoginForm = async () => {
+    const endpoint = 'http://localhost:8000/api/1.0/signin';
+    const response = await submitForm(endpoint, formData.value, errors);
+    if (response) {
+        console.log('Login successful:', response);
+        window.location.href = '/';
+        alert('Login successful');
+    }
+}
+
 </script>
 <template>
     <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center pt-5">
@@ -18,10 +35,10 @@ const togglePassword = () => {
         <h2 class="login-subtitle">
             Welcome back, login to learn and explore more about Indonesian culture.
         </h2>
-        <form class="login-form pb-6">
+        <form class="login-form pb-6" @submit.prevent="submitLoginForm">
             <div class="input-group">
                 <div class="login-label-input">email</div>
-                <input class="login-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
+                <input v-model="formData.email" class="login-input" placeholder="Enter your email" :class="{ 'is-error': errors.name }" />
                 <div class="input-error-text" v-if="errors.email">
                     {{ errors.email }}
                 </div>
@@ -29,7 +46,7 @@ const togglePassword = () => {
             <div class="input-group">
                 <div class="login-label-input">password</div>
                 <div class="input-password-wrapper">
-                    <input class="login-input input-password" placeholder="Enter your password"
+                    <input v-model="formData.password" class="login-input input-password" placeholder="Enter your password"
                         :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.name }" />
                     <button class="password-toggler" type="button" @click="togglePassword">
                         <i v-if="!isPasswordVisible" class="bi bi-eye ic-password "></i>
@@ -41,7 +58,7 @@ const togglePassword = () => {
                 </div>
             </div>
             <div>
-                <button class="login-submit-btn">
+                <button class="login-submit-btn" type="submit">
                     Login
                 </button>
             </div>

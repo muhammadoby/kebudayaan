@@ -3,12 +3,22 @@ import { ref, onMounted, nextTick } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
 import { navMainStore } from '@/stores/navMain';
 import NavSearch from './NavSearch.vue';
+import RegisterView from '@/views/registerView.vue';
+import LoginView from '@/views/loginView.vue';
 const navSearch = ref<ComponentExposed<typeof NavSearch>>();
 
 const state = navMainStore();
 const nav = ref<HTMLElement>();
+const isRegisterViewActive = ref(false);
+const isLoginViewActive = ref(false);
 const activeNavSearch = () => {
     navSearch.value?.toggleActive(true);
+}
+const openRegisterView = () => {
+    isRegisterViewActive.value = true; 
+}
+const openLoginView = () => {
+    isLoginViewActive.value = true; 
 }
 onMounted(async () => {
     await nextTick();
@@ -37,12 +47,14 @@ onMounted(async () => {
                     <i class="bi bi-search  search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
                 </div>
-                <div>Login</div>
-                <div class="nav-register">Register</div>
+                <div class="nav-login" @click="openLoginView">Login</div>
+                <div class="nav-register" @click="openRegisterView">Register</div>
             </div>
         </div>
     </nav>
     <NavSearch ref="navSearch" />
+    <RegisterView v-if="isRegisterViewActive" />
+    <LoginView v-if="isLoginViewActive" />
 </template>
 <style scoped>
 .logo {
