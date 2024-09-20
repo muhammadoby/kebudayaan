@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index');
+        $this->middleware(['auth:sanctum'])->except('index');
         $this->middleware('permission:create event')->only('store');
         $this->middleware('permission:edit event')->only('update');
         $this->middleware('permission:delete event')->only('destroy');
@@ -41,7 +42,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'location' => 'required|date',
+            'ticket' => 'required',
+            'age' => 'required|string',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors(),
+                'code' => 400
+            ], 400);
+        }
     }
 
     /**
