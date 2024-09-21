@@ -1,19 +1,21 @@
 <script lang="ts" setup>
 import { submitForm } from '@/service/apiService';
-import axios from 'axios';
+import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const isPasswordVisible = ref(false);
 const errors = ref({
-    name: ref<string>(),
-    email: ref<string>(),
-    password: ref<string>(),
-    passwordConfirmation: ref<string>(),
+    name: "",
+    email: "",
+    password: "",
 });
 const formData = ref({
     name: '',
     email: '',
     password: '',
-    passwordConfirmation: '',
 });
 const togglePassword = () => {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -24,13 +26,15 @@ const submitRegistrationForm = async () => {
     const response = await submitForm(endpoint, formData.value, errors);
     if (response) {
         console.log('Registration successful:', response);
-        alert('Registration successful');
-        window.location.href = '/';
+        setTimeout(() => {
+            router.push('/register');
+        }), 3000;
     }
 }
 
 </script>
 <template>
+    <PrimeToast />
     <div class="lg:min-h-screen flex flex-column justify-content-center align-items-center py-3">
         <h1 class="register-title text-center lg:mt-0">
             Register
@@ -65,14 +69,6 @@ const submitRegistrationForm = async () => {
                 </div>
                 <div class="input-error-text" v-if="errors.password">
                     {{ errors.password }}
-                </div>
-            </div>
-            <div class="input-group">
-                <div class="register-label-input">Confirm Password</div>
-                <input v-model="formData.passwordConfirmation" class="register-input" placeholder="Confirm your password"
-                    :type="isPasswordVisible ? 'text' : 'password'" :class="{ 'is-error': errors.passwordConfirmation }" />
-                <div class="input-error-text" v-if="errors.passwordConfirmation">
-                    {{ errors.passwordConfirmation }}
                 </div>
             </div>
             <div>

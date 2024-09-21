@@ -3,22 +3,12 @@ import { ref, onMounted, nextTick } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
 import { navMainStore } from '@/stores/navMain';
 import NavSearch from './NavSearch.vue';
-import RegisterView from '@/views/registerView.vue';
-import LoginView from '@/views/loginView.vue';
 const navSearch = ref<ComponentExposed<typeof NavSearch>>();
 
 const state = navMainStore();
 const nav = ref<HTMLElement>();
-const isRegisterViewActive = ref(false);
-const isLoginViewActive = ref(false);
 const activeNavSearch = () => {
     navSearch.value?.toggleActive(true);
-}
-const openRegisterView = () => {
-    isRegisterViewActive.value = true; 
-}
-const openLoginView = () => {
-    isLoginViewActive.value = true; 
 }
 onMounted(async () => {
     await nextTick();
@@ -40,21 +30,23 @@ onMounted(async () => {
                 </div>
                 <div>Budaya</div>
                 <div>Acara</div>
-                <div>Contact</div>
+                <div>
+                    <RouterLink to="/contact" class="router-link">
+                        Contact
+                    </RouterLink> 
+                </div>
             </div>
             <div class="justify-content-end w-full flex gap-4 align-items-center">
                 <div class="search relative " @click="activeNavSearch">
                     <i class="bi bi-search  search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
                 </div>
-                <div class="nav-login" @click="openLoginView">Login</div>
-                <div class="nav-register" @click="openRegisterView">Register</div>
+                <div class="nav-login">Login</div>
+                <div class="nav-register">Register</div>
             </div>
         </div>
     </nav>
     <NavSearch ref="navSearch" />
-    <RegisterView v-if="isRegisterViewActive" />
-    <LoginView v-if="isLoginViewActive" />
 </template>
 <style scoped>
 .logo {
