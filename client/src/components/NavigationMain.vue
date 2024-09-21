@@ -31,14 +31,18 @@ onMounted(async () => {
                 </div>
                 <div>Budaya</div>
                 <div>Acara</div>
-                <div>Contact</div>
+                <div>
+                    <RouterLink to="/contact" class="router-link">
+                        Contact
+                    </RouterLink> 
+                </div>
             </div>
             <div class="justify-content-end w-full flex gap-4 align-items-center" v-if="!isAuth">
                 <div class="search relative " @click="activeNavSearch">
                     <i class="bi bi-search  search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
                 </div>
-                <div>Login</div>
+                <div class="nav-login">Login</div>
                 <div class="nav-register">Register</div>
             </div>
             <div class="justify-content-end w-full flex gap-4 align-items-center" v-else>
