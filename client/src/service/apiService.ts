@@ -1,23 +1,20 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ref } from "vue";
-export const submitForm = async <T extends object>(
+export const submitForm = async <D extends object,E extends object & {errors? : object}>(
   endpoint: string,
-  formData: T,
+  formData: unknown,
   errors: ReturnType<typeof ref<any>>
 ) => {
-  try {
-    errors.value = {};
-    const response = await axios.post(endpoint, formData);
-
-    return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.status === 422) {
-      console.log(errors.value);
-      Object.keys(error.response.data.errors).forEach((key) => {
-        errors.value[key] = error.response.data.errors[key][0];
-      });
-    } else {
-      console.error("Request failed:", error);
-    }
+  let error!: AxiosError<any,any>;
+  const response = await axios.post<D>(endpoint, formData).catch<AxiosError<E>>(e => {
+    error = e;
+    return e;
+  });
+  if (error instanceof AxiosError &&  error?.response?.status === 422) {
+    Object.keys(error.response.data.errors).forEach((key) => {
+      errors.value[key] = error?.response?.data.errors[key][0];
+    });
+    return error;
   }
-};
+    return response;
+}
