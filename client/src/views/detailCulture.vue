@@ -387,6 +387,11 @@ const imageClick = (index: number) => {
     background-color: rgb(246, 246, 246);
 }
 
+.comment-profile-pic>img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 @media (max-width: 992px) {
     .grid-hero>div:nth-child(1) {
         grid-column: 1/-1;
