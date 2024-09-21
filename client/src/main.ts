@@ -8,7 +8,6 @@ import ToastService from "primevue/toastservice";
 import Aura from "@primevue/themes/aura";
 
 const app = createApp(App);
-
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
@@ -23,7 +22,6 @@ app.use(PrimeVue, {
 });
 app.use(ToastService);
 app.use(createPinia());
-// eslint-disable-next-line vue/multi-word-component-names
 app.use(router);
 
 app.mount("#app");
