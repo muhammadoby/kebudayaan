@@ -46,22 +46,22 @@
                     <div class="grid">
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer1.png" class="w-full" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer2.jpg" class="w-full" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer3.jpg" class="w-full" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer4.jpg" class="w-full" />
                             </div>
                         </div>
 
