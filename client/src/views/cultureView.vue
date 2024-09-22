@@ -182,8 +182,8 @@ navState.active = 'culture';
                         <div class="shadow-3 px-3 py-3 card-culture border-round-md grid">
                             <div class="sm:col-5 col-12">
                                 <div>
-                                    <img src="https://www.blibli.com/friends-backend/wp-content/uploads/2022/07/60dacbf4238f5.jpg"
-                                        class="w-full border-round-md" alt="hero image" />
+                                    <img src="https://www.blibli.com/friends-backend/wp-content/uploads/2022/07/60dacbf4238f5.jpg" class="w-full border-round-md"
+                                        alt="hero image" />
                                 </div>
                             </div>
                             <div class="col-7">
@@ -199,10 +199,7 @@ navState.active = 'culture';
                                 <div class="flex gap-2 mt-2">
                                     <i class="bi bi-newspaper"></i>
                                     <div class="max-line-2 mt-1">
-                                        Tari Saman merupakan salah satu kesenian berasal dari kabupaten Gayo, Aceh yang
-                                        memperkuat budaya Indonesia sehingga berada di pangkuan dunia. Sejarah mengenai
-                                        Tari Saman belum ada pendapat secara pasti awal terciptanya nama tari yang
-                                        berasal dari Gayo ini.
+                                        Tari Saman merupakan salah satu kesenian berasal dari kabupaten Gayo, Aceh yang memperkuat budaya Indonesia sehingga berada di pangkuan dunia. Sejarah mengenai Tari Saman belum ada pendapat secara pasti awal terciptanya nama tari yang berasal dari Gayo ini.
                                     </div>
                                 </div>
                             </div>

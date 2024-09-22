@@ -18,13 +18,6 @@ const dataImage = ref([
 const imgDetail = ref<ComponentExposed<typeof ImgDetail>>();
 const nav = navMainStore();
 nav.active = 'culture';
-const showReportDialog = () => {
-    isReportDialogVisible.value = true;
-};
-const hideReportDialog = () => {
-    isReportDialogVisible.value = false;
-}
-const isReportDialogVisible = ref(false);
 const carouselResponsiveOptions = ref([
     {
         breakpoint: '767px',
@@ -195,23 +188,7 @@ const imageClick = (index: number) => {
                     </div>
                 </section>
                 <section class="mt-4 mb-5">
-                    <PrimeDialog v-model:visible="isReportDialogVisible" :draggable="false" modal
-                        :style="{ 'max-width': '400px', 'width': 'calc(100% - 10px)' }">
-                        <template #header>
-                            <div class="inline-flex items-center justify-center gap-2">
-                                <span class="font-bold whitespace-nowrap">Laporkan tulisan</span>
-                            </div>
-                        </template>
-                        <div>
-                            <textarea class="w-full input-report" placeholder="Berikan alasanmu" rows="4"></textarea>
-
-                        </div>
-                        <div class="mt-2">
-                            <button class="report-send-btn">Kirim</button>
-                            <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
-                        </div>
-                    </PrimeDialog>
-                    <div class="font-medium flex gap-3 align-items-center" @click="showReportDialog">
+                    <div class="font-medium flex gap-3 align-items-center">
                         <i class="bi bi-flag text-lg"></i>
                         <div>Laporkan Tulisan</div>
                     </div>
@@ -223,8 +200,8 @@ const imageClick = (index: number) => {
                     <div class="grid">
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80"
-                                    alt="hero image" class="border-round-md" />
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80" alt="hero image"
+                                    class="border-round-md" />
 
                             </div>
                             <div>
@@ -234,8 +211,8 @@ const imageClick = (index: number) => {
                         </div>
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80"
-                                    alt="hero image" class="border-round-md" />
+                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80" alt="hero image"
+                                    class="border-round-md" />
 
                             </div>
                             <div>
@@ -368,39 +345,12 @@ const imageClick = (index: number) => {
     padding: 8px 15PX;
 }
 
-.report-send-btn {
-    border: 0;
-    font-weight: 600;
-    background-color: #00A3FF;
-    color: white;
-    padding: 7px 20px;
-    border-radius: 8px;
-    transition: background-color 500ms;
-}
-
-.report-send-btn:hover {
-    background-color: #0f419e;
-}
-
-.report-cancel-btn {
-    border: 0;
-    font-weight: 600;
-    color: white;
-    padding: 7px 20px;
-    border-radius: 8px;
-    background-color: rgb(228, 16, 16);
-    transition: background-color 500ms;
-}
-
-.report-cancel-btn:hover {
-    background-color: rgb(139, 13, 13);
-}
-
-.input-report {
-    padding: 10px;
-    border: solid 1px rgb(193, 194, 194);
-    border-radius: 8px;
-    outline: none;
+.max-line-5 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .comment-send-btn {
@@ -411,6 +361,10 @@ const imageClick = (index: number) => {
     padding: 7px 20px;
     border-radius: 8px;
     transition: background-color 500ms;
+}
+
+.comment-send-btn:hover {
+    background-color: #0f419e;
 }
 
 .see-all-comment-btn {

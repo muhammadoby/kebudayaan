@@ -4,7 +4,6 @@ import { navMainStore } from '@/stores/navMain';
 const navMain = navMainStore();
 
 navMain.active = 'home';
-navMain.active = 'home';
 const navHeight = ref(0);
 let abortController: AbortController;
 const resize = () => {
@@ -440,9 +439,7 @@ onUnmounted(() => {
 
 .culture-list-item img,
 .event-list-item img {
-    aspect-ratio: 3/2;
     border-radius: 8px;
-    object-fit: cover;
 }
 
 .culture-list-item:hover,
