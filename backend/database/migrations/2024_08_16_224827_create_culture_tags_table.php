@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('culture_tags', function (Blueprint $table) {
             $table->id();
             $table->foreignId('culture_id')->constrained('cultures', 'id')->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained('tags', 'id')->onDelete('cascade');
+            $table->string('tag_name', 4);
             $table->timestamps();
         });
     }

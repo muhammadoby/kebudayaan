@@ -55,4 +55,8 @@ class User extends Authenticatable
         });
     }
 
+    public function cultureComments()
+    {
+        return $this->hasMany(CultureComment::class);
+    }
 }

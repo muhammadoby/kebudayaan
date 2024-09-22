@@ -36,9 +36,13 @@ onUnmounted(() => {
                 <div class="brand-name">
                     Explore <span class="brand-name-dark-blue">Budaya</span>
                 </div>
-                <button class="action-btn mt-3">
-                    <RouterLink to="/">Jelajahi sekarang</RouterLink>
-                </button>
+                <RouterLink to="/budaya">
+                    <button class="action-btn mt-3">
+                        Jelajahi sekarang
+                    </button>
+                </RouterLink>
+
+
             </div>
         </div>
     </section>
@@ -91,8 +95,6 @@ onUnmounted(() => {
                     <img src="@/assets/image/home/map.png" class="w-full" alt="Map" />
                 </div>
             </div>
-
-
         </div>
     </section>
 

@@ -12,10 +12,10 @@ class CultureController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index');
-        $this->middleware('permission:create post')->only('store');
-        $this->middleware('permission:delete post')->only('update');
-        $this->middleware('permission:edit post')->only('destroy');
+        // $this->middleware('auth:sanctum')->except('index');
+        // $this->middleware('permission:create post')->only('store');
+        // $this->middleware('permission:delete post')->only('update');
+        // $this->middleware('permission:edit post')->only('destroy');
     }
     /**
      * Display a listing of the resource.

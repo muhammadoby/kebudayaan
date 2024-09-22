@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, onUnmounted } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
 import { navMainStore } from '@/stores/navMain';
 import NavSearch from './NavSearch.vue';
@@ -11,30 +11,69 @@ const activeNavSearch = () => {
     navSearch.value?.toggleActive(true);
 }
 const isAuth = ref(true);
+const profileDropDown = ref<HTMLDivElement>();
+const profileDropDownVisible = ref(false);
+const showProfileDropdown = () => {
+    if (!profileDropDownVisible.value) {
+        profileDropDownVisible.value = true;
+        setTimeout(async () => {
+            backdropEvent();
+        }, 0);
+        return;
+    }
+
+    profileDropDownVisible.value = false;
+    document.removeEventListener('click', backdropClick);
+
+};
+
+function backdropClick(evt: MouseEvent) {
+    const isClickInside = evt.composedPath().includes(profileDropDown.value as HTMLDivElement);
+    if (!isClickInside) {
+        document.removeEventListener('click', backdropClick);
+        profileDropDownVisible.value = false;
+        console.log(profileDropDownVisible.value, 'hsdhsdh2');
+
+    }
+}
+const backdropEvent = () => {
+
+    document.addEventListener('click', backdropClick);
+}
+
 onMounted(async () => {
     await nextTick();
     state.height = nav.value?.clientHeight || 0;
+
 });
 
+onUnmounted(() => {
+    document.removeEventListener('click', backdropEvent);
+})
 
 </script>
 <template>
-    <nav class="fixed nav w-full" ref="nav" v-show="!state.hide">
+    <nav class="fixed nav w-full" ref="nav" v-show="!state.hide" :style="{ '--nav-height': `${state.height}px` }">
         <div class="navbar-nav  w-full gap-4 align-items-center">
             <div class="logo">
+                <img src="@/assets/image/logo.png" />
             </div>
             <div class="flex gap-4 nav-link">
                 <div>
-                    <RouterLink to="/" class="router-link">
+                    <RouterLink to="/" class="router-link active">
                         Home
                     </RouterLink>
                 </div>
-                <div>Budaya</div>
+                <div>
+                    <RouterLink to="/culture" class="router-link">
+                        budaya
+                    </RouterLink>
+                </div>
                 <div>Acara</div>
                 <div>
                     <RouterLink to="/contact" class="router-link">
                         Contact
-                    </RouterLink> 
+                    </RouterLink>
                 </div>
             </div>
             <div class="justify-content-end w-full flex gap-4 align-items-center" v-if="!isAuth">
@@ -53,7 +92,13 @@ onMounted(async () => {
                 <div>
                     <i class="bi bi-plus-square text-2xl text-gray"></i>
                 </div>
-                <div class="profile-pic">
+                <div class="profile-pic relative" @click="showProfileDropdown">
+                    <div class="profile-dropdown shadow-4" ref="profileDropDown" v-if="profileDropDownVisible">
+                        <div>
+                            <RouterLink to="/editProfile">Edit profile</RouterLink>
+                        </div>
+                        <div>Logout</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,10 +110,13 @@ onMounted(async () => {
     color: rgb(95, 99, 104);
 }
 
-.logo {
-    padding: 20px;
+.logo {}
+
+.logo>img {
+    background-color: black;
     border-radius: 50%;
-    background-color: gray;
+    width: 40px;
+    aspect-ratio: 1/1;
 }
 
 .nav {
@@ -111,10 +159,13 @@ onMounted(async () => {
 }
 
 .router-link {
-    color: #00A3FF;
     position: relative;
     padding-bottom: 2px;
     text-decoration: none;
+}
+
+.router-link.active {
+    color: #00A3FF
 }
 
 .router-link:hover::before {
@@ -135,9 +186,32 @@ onMounted(async () => {
 }
 
 .profile-pic {
-    width: 30px;
+    width: 40px;
     border-radius: 50%;
     aspect-ratio: 1/1;
     background-color: black;
+}
+
+.profile-dropdown {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    max-width: 150px;
+    width: max-content;
+    top: 0;
+    padding-block: 5px;
+    font-size: 1rem;
+    font-weight: 400;
+    position: absolute;
+    border-radius: 8px;
+    transform: translate(-55%, 55px);
+}
+
+.profile-dropdown div {
+    padding: 5px 20px 5px;
+}
+
+.profile-dropdown :hover {
+    background-color: #F2F2F2;
 }
 </style>

@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->string('location');
-            $table->string('ticket');
-            $table->string('age');
+            $table->decimal('ticket');
             $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->timestamps();
         });

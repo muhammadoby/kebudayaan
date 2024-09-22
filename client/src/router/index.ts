@@ -7,6 +7,12 @@ import AuthLayout from '@/layout/AuthLayout.vue';
 import detailCulture from '@/views/detailCulture.vue';
 import 'vue-router';
 import ContactView from '@/views/contactView.vue';
+import CultureView from '@/views/cultureView.vue';
+import EventView from '@/views/eventView.vue';
+import DetailEvent from '@/views/detailEvent.vue';
+import EditProfile from '@/views/editProfile.vue';
+import AddCulture from '@/views/addCulture.vue';
+import AddEvent from '@/views/addEvent.vue';
 declare module 'vue-router' {
     interface RouteMeta {
         layout?: Component 
@@ -28,8 +34,12 @@ const router = createRouter({
     routes: [
 
         {
-            path: '/budaya/:id',
+            path: '/culture/:id',
             component: detailCulture
+        },
+        {
+            path: '/culture',
+            component: CultureView
         },
         {
             path: '/register',
@@ -55,6 +65,25 @@ const router = createRouter({
             path: '/contact',
             component: ContactView,
         },
+        {
+            path: '/event',
+            component: EventView,
+        },
+        {
+            path: '/event/:id',
+            component: DetailEvent
+        },
+        {
+            path: '/editProfile/:id',
+            component: EditProfile
+        },
+        {
+            path: '/addCulture',
+            component: AddCulture
+        },{
+            path: '/addEvent',
+            component: AddEvent
+        }
     ],
 });
 
