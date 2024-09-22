@@ -104,20 +104,13 @@ const imageClick = (index: number) => {
                 <section class="about-culture">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Kebudayaan</h1>
                     <div class="about-culture-content line-height-3">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's
-                        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                        scrambled it to make
-                        a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                        typesetting,
-                        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                        sheets containing
-                        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-                        including versions
-                        of Lorem Ipsum.
-                        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-                        including versions
-                        of Lorem Ipsum.
+                        Tari Kecak adalah pertunjukan drama tari khas Bali yang umumnya mengangkat kisah
+                        Ramayana. Tarian ini ditarikan oleh puluhan penari laki-laki yang duduk secara
+                        melingkar.
+
+                        Mereka menyerukan "cak cak cak" sambil mengangkat kedua lengan. Pada satu segmen, mereka
+                        menirukan adegan saat barisan kera membantu Rama dalam pertempuran melawan Rahwana yang
+                        menculik Dewi Sita.
                     </div>
                 </section>
                 <section class="information">
@@ -135,7 +128,7 @@ const imageClick = (index: number) => {
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penulis</div>
-                                    <div>Nyoman</div>
+                                    <div>Made Anggara</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
@@ -207,24 +200,24 @@ const imageClick = (index: number) => {
                     <div class="grid">
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80"
+                                    alt="hero image" class="border-round-md" />
 
                             </div>
                             <div>
-                                <div class="text-lg font-medium"> Tarian Kecak</div>
-                                <div>I Made </div>
+                                <div class="text-lg font-medium"> Upacara Melasti</div>
+                                <div>Made Anggara</div>
                             </div>
                         </div>
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
+                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80"
+                                    alt="hero image" class="border-round-md" />
 
                             </div>
                             <div>
-                                <div class="text-lg font-medium"> Tarian Kecak</div>
-                                <div>I Made </div>
+                                <div class="text-lg font-medium"> Hari Raya Nyepi</div>
+                                <div>Made Anggara</div>
                             </div>
                         </div>
                     </div>

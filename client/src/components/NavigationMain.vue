@@ -101,7 +101,7 @@ onUnmounted(() => {
                         </div>
                     </div>
                 </div>
-                <div class="lg:hidden" @click="navMobile?.toggleActive(true)">
+                <div class="lg:hidden">
                     <i class="bi bi-list text-3xl"></i>
                 </div>
             </div>
