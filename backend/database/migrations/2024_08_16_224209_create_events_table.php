@@ -17,6 +17,10 @@ return new class extends Migration
             $table->longText('description');
             $table->string('location');
             $table->decimal('ticket');
+            $table->string('status', 255);
+            $table->text('buy_method');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
             $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->timestamps();
         });

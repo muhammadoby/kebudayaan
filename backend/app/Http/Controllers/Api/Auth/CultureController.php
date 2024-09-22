@@ -20,12 +20,15 @@ class CultureController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $page =  $request->query('page') ?: 0;
+        $limit =  $request->query('limit') ?: 5;
+
         return response()->json([
             'status' => true,
             'message' => 'List of culture',
-            'data' => Culture::where('user_id', auth()->id())->get()
+            'data' => Culture::take($limit)->offset($page * $limit)->with('img')->get()
         ]);
     }
 
@@ -52,7 +55,7 @@ class CultureController extends Controller
             'tags' => 'nullable|numeric',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validator->errors(),
@@ -67,7 +70,7 @@ class CultureController extends Controller
             $culture->user_id = $request->user()->id;
             $culture->save();
 
-            if($request->hasFile('images')){
+            if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $key => $file) {
                     $gallery = new CultureGallery();
                     $gallery->culture_id = $culture->id;
@@ -78,9 +81,8 @@ class CultureController extends Controller
                 }
             }
 
-            if($request->tags){
+            if ($request->tags) {
                 foreach ($request->tags as $tag) {
-
                 }
             }
 

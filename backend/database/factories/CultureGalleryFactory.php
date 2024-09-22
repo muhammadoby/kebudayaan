@@ -18,11 +18,11 @@ class CultureGalleryFactory extends Factory
     public function definition(): array
     {
         $images = [
-            '/culture-gallery/culture-0',
-            '/culture-gallery/culture-1',
-            '/culture-gallery/culture-2',
-            '/culture-gallery/culture-3',
-            '/culture-gallery/culture-4',
+            '/culture-gallery/culture-0.jpg',
+            '/culture-gallery/culture-1.jpg',
+            '/culture-gallery/culture-2.jpg',
+            '/culture-gallery/culture-3.jpg',
+            '/culture-gallery/culture-4.jpg',
         ];
 
         return [

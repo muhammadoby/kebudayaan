@@ -18,9 +18,10 @@ class CultureFactory extends Factory
 
     public function definition(): array
     {
+        $names = ['Tarian', 'Karya sastra', 'Lukisan', 'Tradisi',];
         return [
-            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(), 
-            'name' => $this->faker->sentence,
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'name' => $names[rand(0, count($names) - 1)],
             'description' => $this->faker->paragraphs(3, true),
         ];
     }
