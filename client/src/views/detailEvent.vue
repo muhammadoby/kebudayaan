@@ -3,7 +3,7 @@ import { navMainStore } from '@/stores/navMain';
 
 const nav = navMainStore();
 const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
-
+nav.active = 'event';
 </script>
 <template>
     <section class="hero lg:h-screen flex align-items-center text-white "
@@ -46,7 +46,7 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
             <div class="lg:col-8 col-12">
                 <section class="about">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Acara</h1>
-                    <div class="line-height-3 max-line-5">
+                    <div class="line-height-3">
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
                         the industry's
                         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -71,14 +71,14 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Lokasi acara</div>
-                                    <div>Jawa Timur</div>
+                                    <div>Bali</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penyelenggara</div>
-                                    <div>sdhjksdbkds jsdbkjasd kjasbkjsad jksdkjabsd hasvkjsad jaddkjsdbb</div>
+                                    <div>I Nyoamn Lorem ipsum</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
@@ -119,7 +119,7 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
                             Kesenian
                         </div>
                         <div class="category-item">
-                            Sakral
+                            Acara tahunan
                         </div>
                         <div class="category-item">
                             Pesta kesenian
@@ -154,7 +154,7 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
                 <section class="mt-4 mb-5">
                     <div class="font-medium flex gap-3 align-items-center">
                         <i class="bi bi-flag text-lg"></i>
-                        <div>Laporkan Tulisan</div>
+                        <div>Laporkan acara</div>
                     </div>
                 </section>
             </div>
@@ -169,7 +169,7 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
 
                             </div>
                             <div>
-                                <div class="text-lg font-medium"> Tarian Kecak</div>
+                                <div class="text-lg font-medium"> Pesta kesenian bali</div>
                                 <div>Gratis</div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@ const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
 
                             </div>
                             <div>
-                                <div class="text-lg font-medium"> Tarian Kecak</div>
+                                <div class="text-lg font-medium"> pesta kesenian bali</div>
                                 <div>Gratis </div>
                             </div>
                         </div>

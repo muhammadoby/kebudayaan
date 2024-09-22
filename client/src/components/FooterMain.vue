@@ -34,7 +34,7 @@
                 </div>
                 <div class="lg:col-4 col-12 lg:pl-3">
                     <div>
-                        <h1 class="font-semibold text-lg ">Tentang aplikasi</h1>
+                        <h1 class="font-semibold text-lg ">Tentang Explore budaya</h1>
                         <div class="font-normal">
                             Explore Budaya adalah wadah bagi kebudayaan-kebudayaan yang ada hampir di seluruh wilayah
                             atau Pulau yang ada di Indonesia mulai dari sabang sampai merauke.
@@ -71,14 +71,14 @@
 
         </div>
         <div class="text-center copyright">
-            Made by a
+            © 2024 Explore Budaya. All Rights Reserved
         </div>
     </footer>
 </template>
 <style scoped>
 .footer {
     color: white;
-    background-color: #252525;
+    background-color: #212020;
 }
 
 .img-footer {
@@ -88,6 +88,6 @@
 
 .copyright {
     padding: 10px;
-    background-color: black;
+    background-color: rgb(24, 23, 23);
 }
 </style>

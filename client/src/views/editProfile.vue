@@ -19,22 +19,23 @@ const getFile = () => {
                     </div>
                 </div>
                 <div class="md:col-9 bg-white px-4 py-6 border-round-md col-12">
-                    <div class="sm:px-8 px-3 bg-white py-4 md:hidden">
+                    <div class="sm:px-8 px-5 bg-white py-4 md:hidden">
                         <div class="profile-pic" @click="getFile"></div>
                     </div>
                     <h1 class="mt-0 mb-0"> Data akun</h1>
                     <form class="edit-profile-form px-2 mt-3">
                         <div class="input-group">
                             <div class="font-medium">USERNAME</div>
-                            <input placeholder="Example: John doe" class="input-data-account" />
+                            <input placeholder="Example: John doe" class="input-data-account" value="example" />
                         </div>
                         <div class="input-group mt-4">
                             <div class="font-medium">Email</div>
-                            <input placeholder="Example: johndoe@example.com" class="input-data-account" />
+                            <input placeholder="Example: johndoe@example.com" class="input-data-account" disabled
+                                value="example@gmail.com" />
                         </div>
                         <div class="input-group mt-4">
                             <div class="font-medium">Display Name</div>
-                            <input placeholder="Example: John doe" class="input-data-account" />
+                            <input placeholder="Example: John doe" class="input-data-account" value="example" />
                         </div>
                     </form>
                     <div class="flex  mt-5 px-2">
@@ -69,6 +70,10 @@ const getFile = () => {
     width: 100%;
     padding: 15px 20px;
     border-radius: 8px;
+}
+
+.input-data-account:disabled {
+    background-color: #d7d2d2;
 }
 
 .save-change-btn {

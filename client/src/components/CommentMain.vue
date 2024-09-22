@@ -50,9 +50,9 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
                         <i class="bi bi-chat text-xl"></i>
                         Balas
                     </div>
-                    <div class="flex gap-2 align-items-center font-medium">
+                    <!-- <div class="flex gap-2 align-items-center font-medium">
                         Lihat Balasan
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

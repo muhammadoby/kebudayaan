@@ -13,6 +13,7 @@ import DetailEvent from '@/views/detailEvent.vue';
 import EditProfile from '@/views/editProfile.vue';
 import AddCulture from '@/views/addCulture.vue';
 import AddEvent from '@/views/addEvent.vue';
+import NotFound from '@/views/notFound.vue';
 declare module 'vue-router' {
     interface RouteMeta {
         layout?: Component 
@@ -80,9 +81,14 @@ const router = createRouter({
         {
             path: '/addCulture',
             component: AddCulture
-        },{
+        },
+        {
             path: '/addEvent',
             component: AddEvent
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            component: NotFound
         }
     ],
 });

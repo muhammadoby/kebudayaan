@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
-
 const navMain = navMainStore();
 
-
+navMain.active = 'home';
 const navHeight = ref(0);
 let abortController: AbortController;
 const resize = () => {
@@ -25,8 +24,6 @@ onUnmounted(() => {
     abortController.abort();
 });
 
-
-
 </script>
 <template>
     <section class="hero" :style="{ 'padding-top': `${navHeight}px` }">
@@ -36,13 +33,11 @@ onUnmounted(() => {
                 <div class="brand-name">
                     Explore <span class="brand-name-dark-blue">Budaya</span>
                 </div>
-                <RouterLink to="/budaya">
+                <RouterLink to="/culture">
                     <button class="action-btn mt-3">
                         Jelajahi sekarang
                     </button>
                 </RouterLink>
-
-
             </div>
         </div>
     </section>
@@ -105,12 +100,22 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -118,12 +123,22 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -131,12 +146,22 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -144,12 +169,22 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -157,12 +192,22 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -170,20 +215,31 @@ onUnmounted(() => {
                 <div class="col-12 sm:col-6 md:col-4">
                     <div class="culture-list-item py-4 px-3">
                         <div>
-                            <img src="@/assets//image/home/home1.jpg" class="w-full" />
+                            <img src="@/assets/image/home/grid-img1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Tarian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="flex justify-content-center mt-4">
                 <button class="btn-see-another btn-blue">
-                    Lihat Lainnya
+                    <RouterLink to="/culture">Lihat Lainnya</RouterLink>
                 </button>
             </div>
         </div>
@@ -198,9 +254,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta Kesenian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -211,9 +277,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta Kesenian</h2>
+                            <div class="max-line-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -224,9 +300,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta Kesenian</h2>
+                            <div class="max-line-3"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                                viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -237,9 +323,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta Kesenian</h2>
+                            <div class="max-line-3"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                                viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -250,9 +346,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta kesenian</h2>
+                            <div class="max-line-3"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                                viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -263,9 +369,19 @@ onUnmounted(() => {
                             <img src="@/assets//image/home/home1.jpg" class="w-full" />
                         </div>
                         <div>
-                            <h2 class="text-xl mb-0 mt-2">Nama</h2>
-                            <div class="max-line-3">sdhsdlkhsdlk khdgsjhvabd ashdvjhasv dbskasdaskvasd vasvjhavsjhsad
-                                jasdvjhasdv adjva shhddddj dshjk bdsjshksd sjsdkj hsdkjsd hshdssd sbsd
+                            <h2 class="text-xl mb-0 mt-2">Pesta kesenian</h2>
+                            <div class="max-line-3"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                                viverra et dolor quis
+                                gravida. Morbi nisl urna, mattis sed orci sit amet, pellentesque rutrum elit. Nam in mi
+                                ac velit semper elementum. Cras tempus tempor odio sit amet hendrerit. Aliquam eros
+                                erat, molestie sit amet ornare in, vestibulum nec urna. In maximus iaculis arcu, ut
+                                placerat erat. Morbi in rhoncus dui, ac tristique tellus. Maecenas a condimentum nisi.
+                                Vestibulum cursus gravida tortor, in elementum neque porttitor et. Maecenas eget
+                                vestibulum velit, in porttitor augue. Sed dictum nunc vitae sem venenatis euismod. Etiam
+                                faucibus, augue vel dapibus tristique, lorem nibh ultricies est, eget efficitur sem
+                                massa quis ligula. Morbi et leo tincidunt, egestas augue eget, volutpat lectus. Sed
+                                scelerisque est neque, non dictum justo rhoncus in. Nam gravida lorem posuere vulputate
+                                sollicitudin. Ut placerat non risus eget mollis.
                             </div>
                         </div>
                     </div>
@@ -273,7 +389,7 @@ onUnmounted(() => {
             </div>
             <div class="flex justify-content-center mt-4">
                 <button class="btn-blue">
-                    Lihat Lainnya
+                    <RouterLink to="/event">Lihat Lainnya</RouterLink>
                 </button>
             </div>
         </div>
@@ -287,7 +403,7 @@ onUnmounted(() => {
                 explore budaya
             </div>
             <div class="text-center mt-4">
-                <RouterLink to="/" class="link-blue font-semibold uppercase text-lg">Jelajahi Budaya</RouterLink>
+                <RouterLink to="/culture" class="link-blue font-semibold uppercase text-lg">Jelajahi Budaya</RouterLink>
             </div>
         </div>
     </section>

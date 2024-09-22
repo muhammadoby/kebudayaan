@@ -17,6 +17,7 @@ const dataImage = ref([
 ]);
 const imgDetail = ref<ComponentExposed<typeof ImgDetail>>();
 const nav = navMainStore();
+nav.active = 'culture';
 const carouselResponsiveOptions = ref([
     {
         breakpoint: '767px',
@@ -42,8 +43,8 @@ const imageClick = (index: number) => {
             <div class="grid-hero">
                 <div class="flex align-items-end h-full pb-6 sm:pb-8">
                     <div>
-                        <h1 class="text-white font-semibold mb-0 hero-text-title">Tari Rejang Renteng</h1>
-                        <div class="text-xl text-white font-medium">Oleh I XXX</div>
+                        <h1 class="text-white font-semibold mb-0 hero-text-title">Tari Kecak</h1>
+                        <div class="text-xl text-white font-medium">Oleh Nyoman</div>
                         <div class="flex text-blue mt-4 gap-4">
                             <div class="flex gap-2 align-items-center">
                                 <i class="bi bi-share-fill text-xl"></i>
@@ -102,7 +103,7 @@ const imageClick = (index: number) => {
                 </section>
                 <section class="about-culture">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Kebudayaan</h1>
-                    <div class="about-culture-content line-height-3 max-line-5">
+                    <div class="about-culture-content line-height-3">
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
                         the industry's
                         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -127,14 +128,14 @@ const imageClick = (index: number) => {
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Asal budaya</div>
-                                    <div>Jawa Timur</div>
+                                    <div>Bali</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penulis</div>
-                                    <div>sdhjksdbkds jsdbkjasd kjasbkjsad jksdkjabsd hasvkjsad jaddkjsdbb</div>
+                                    <div>Nyoman</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
@@ -212,7 +213,7 @@ const imageClick = (index: number) => {
                             </div>
                             <div>
                                 <div class="text-lg font-medium"> Tarian Kecak</div>
-                                <div>I Made shjkdskjsd </div>
+                                <div>I Made </div>
                             </div>
                         </div>
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
@@ -223,7 +224,7 @@ const imageClick = (index: number) => {
                             </div>
                             <div>
                                 <div class="text-lg font-medium"> Tarian Kecak</div>
-                                <div>I Made shjkdskjsd </div>
+                                <div>I Made </div>
                             </div>
                         </div>
                     </div>
