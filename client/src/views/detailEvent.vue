@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
 
 const nav = navMainStore();
 const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
+const isReportDialogVisible = ref(false);
+const showReportDialog = () => {
+    isReportDialogVisible.value = true;
+};
+const hideReportDialog = () => {
+    isReportDialogVisible.value = false;
+}
 nav.active = 'event';
 </script>
 <template>
@@ -142,7 +150,23 @@ nav.active = 'event';
                     </div>
                 </section>
                 <section class="mt-4 mb-5">
-                    <div class="font-medium flex gap-3 align-items-center">
+                    <PrimeDialog v-model:visible="isReportDialogVisible" :draggable="false" modal
+                        :style="{ 'max-width': '400px', 'width': 'calc(100% - 10px)' }">
+                        <template #header>
+                            <div class="inline-flex items-center justify-center gap-2">
+                                <span class="font-bold whitespace-nowrap">Laporkan tulisan</span>
+                            </div>
+                        </template>
+                        <div>
+                            <textarea class="w-full input-report" placeholder="Berikan alasanmu" rows="4"></textarea>
+
+                        </div>
+                        <div class="mt-2">
+                            <button class="report-send-btn">Kirim</button>
+                            <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
+                        </div>
+                    </PrimeDialog>
+                    <div class="font-medium flex gap-3 align-items-center" @click="showReportDialog">
                         <i class="bi bi-flag text-lg"></i>
                         <div>Laporkan acara</div>
                     </div>
@@ -356,6 +380,37 @@ nav.active = 'event';
 .comment-profile-pic>img {
     border-radius: 50%;
     object-fit: cover;
+}
+
+.report-send-btn {
+    border: 0;
+    font-weight: 600;
+    background-color: #00A3FF;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 8px;
+    transition: background-color 500ms;
+}
+
+.report-send-btn:hover {
+    background-color: #0f419e;
+}
+
+.report-cancel-btn {
+    border: 0;
+    font-weight: 600;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 8px;
+    background-color: rgb(228, 16, 16);
+    transition: background-color 500ms;
+}
+
+.input-report {
+    padding: 10px;
+    border: solid 1px rgb(193, 194, 194);
+    border-radius: 8px;
+    outline: none;
 }
 
 @media (max-width: 992px) {

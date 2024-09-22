@@ -123,6 +123,10 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
     transition: background-color 500ms;
 }
 
+.comment-reply-cancel-btn:hover {
+    background-color: rgb(139, 13, 13);
+}
+
 .input-comment-reply {
     padding: 10px;
     border: solid 1px rgb(193, 194, 194);
