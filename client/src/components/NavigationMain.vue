@@ -3,6 +3,7 @@ import { ref, onMounted, nextTick, onUnmounted } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
 import { navMainStore } from '@/stores/navMain';
 import NavSearch from './NavSearch.vue';
+import type NavigationMobile from './NavigationMobile.vue';
 const navSearch = ref<ComponentExposed<typeof NavSearch>>();
 
 const state = navMainStore();
@@ -10,6 +11,7 @@ const nav = ref<HTMLElement>();
 const activeNavSearch = () => {
     navSearch.value?.toggleActive(true);
 }
+const navMobile = ref<ComponentExposed<typeof NavigationMobile>>();
 const isAuth = ref(true);
 const profileDropDown = ref<HTMLDivElement>();
 const profileDropDownVisible = ref(false);
@@ -99,15 +101,16 @@ onUnmounted(() => {
                         </div>
                     </div>
                 </div>
-                <div class="lg:hidden">
+                <div class="lg:hidden" @click="navMobile?.toggleActive(true)">
                     <i class="bi bi-list text-3xl"></i>
                 </div>
             </div>
 
-
         </div>
     </nav>
     <NavSearch ref="navSearch" />
+    <NavigationMobile ref="navMobile" />
+
 </template>
 <style scoped>
 .text-gray {
