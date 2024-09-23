@@ -204,9 +204,11 @@ onUnmounted(() => {
 
             </div>
             <div class="flex justify-content-center mt-4">
-                <button class="btn-see-another btn-blue">
-                    <RouterLink to="/culture">Lihat Lainnya</RouterLink>
-                </button>
+                <RouterLink to="/culture">
+                    <button class="btn-see-another btn-blue">
+                        Lihat Lainnya
+                    </button>
+                </RouterLink>
             </div>
         </div>
     </section>
@@ -302,9 +304,11 @@ onUnmounted(() => {
                 </div>
             </div>
             <div class="flex justify-content-center mt-4">
-                <button class="btn-blue">
-                    <RouterLink to="/event">Lihat Lainnya</RouterLink>
-                </button>
+                <RouterLink to="/event">
+                    <button class="btn-blue">
+                        Lihat Lainnya
+                    </button>
+                </RouterLink>
             </div>
         </div>
     </section>

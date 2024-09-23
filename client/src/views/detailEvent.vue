@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
-
+import { eventStore } from '@/stores/eventStore';
+import { useRoute, useRouter } from 'vue-router';
+const route = useRoute();
+const router = useRouter();
+const eventData = eventStore();
+const data = eventData.getDataById(parseInt(route.params.id as string));
+if (!data) {
+    router.replace('/notfound');
+}
 const nav = navMainStore();
-const bg = new URL(`@/assets/image/home/grid-img1.jpg`, import.meta.url).href;
 const isReportDialogVisible = ref(false);
 const showReportDialog = () => {
     isReportDialogVisible.value = true;
@@ -11,32 +18,21 @@ const showReportDialog = () => {
 const hideReportDialog = () => {
     isReportDialogVisible.value = false;
 }
+const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat('id').format(date);
+}
+const formatTime = (date: Date) => {
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return date.toLocaleTimeString('id', { hour: '2-digit', minute: '2-digit', timeZone: userTimezone });
+}
 nav.active = 'event';
 </script>
 <template>
     <section class="hero lg:h-screen flex align-items-center text-white "
-        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${bg})` }">
+        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${data?.image})` }">
         <div class="container-full flex justify-content-center flex-column align-items-center py-8">
-            <div class=" hero-text-title font-medium">Pesta kesenian bali</div>
-            <!-- <div class="hero-timer-grid ">
-                <div class="flex align-items-center justify-content-center gap-2 flex-column">
-                    <div class="hero-text-timer">30</div>
-                    <div>Hari</div>
-                </div>
-                <div class="flex align-items-center justify-content-center gap-2 flex-column">
-                    <div class="hero-text-timer">10</div>
-                    <div>Jam</div>
-                </div>
-                <div class="flex align-items-center justify-content-center gap-2 flex-column">
-                    <div class="hero-text-timer">20</div>
-                    <div>Menit</div>
-                </div>
-                <div class="flex align-items-center justify-content-center gap-2 flex-column">
-                    <div class="hero-text-timer">15</div>
-                    <div>Detik</div>
-                </div>
-            </div> -->
-            <div class="mt-2 text-2xl font-medium">Akan datang</div>
+            <div class=" hero-text-title font-medium">{{ data?.name }}</div>
+            <div class="mt-2 text-2xl font-medium">{{ data?.status }}</div>
             <div class="flex text-blue mt-4 gap-4">
                 <div class="flex gap-2 align-items-center">
                     <i class="bi bi-share-fill text-xl"></i>
@@ -55,10 +51,7 @@ nav.active = 'event';
                 <section class="about">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Acara</h1>
                     <div class="line-height-3">
-                        Pesta Kesenian Bali adalah parade atau festival kesenian tahunan yang diprakarsai oleh
-                        Pemerintah Provinsi Bali, serta dijadikan sebagai wadah aktivitas dan kreativitas para seniman
-                        dalam upaya mendukung program pemerintah dalam hal penggalian, pelestarian, dan pengembangan
-                        nilai-nilai seni budaya Bali.
+                        {{ data?.description }}
                     </div>
                 </section>
                 <section class="information">
@@ -69,42 +62,48 @@ nav.active = 'event';
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Lokasi acara</div>
-                                    <div>Jl. Nusa Indah No.1, Panjer, Denpasar Selatan, Kota Denpasar, Bali 80236</div>
+                                    <div>{{ data?.location }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penyelenggara</div>
-                                    <div>Pemerintah Provinsi Bali</div>
+                                    <div>{{ data?.organizer }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-calendar text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Jadwal Acara</div>
-                                    <div>20/20/2020(07.00 wita) - 21/20/2020(08.00 wita)</div>
+                                    <div>
+                                        {{ formatDate(data?.startDate as Date) }}
+                                        ({{ formatTime(data?.startDate as Date) }})
+                                        -
+                                        {{ formatDate(data?.endDate as Date) }}
+                                        ({{ formatTime(data?.endDate as Date) }})
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-ticket-perforated text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Harga Tiket</div>
-                                    <div>20.0000</div>
+                                    <div>{{ data?.price || 'Gratis' }}</div>
                                 </div>
                             </div>
-                            <div class="flex gap-3 mt-4">
+                            <div class="flex gap-3 mt-4" v-if="data?.buyMethod">
                                 <i class="bi bi-patch-question text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Cara membeli</div>
-                                    <div>Hubungi 082147702095</div>
+                                    <div>{{ data?.buyMethod }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-eye text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Dilihat</div>
-                                    <div>10 orang</div>
+                                    <div>{{ data?.view }} orang</div>
                                 </div>
                             </div>
                         </div>
