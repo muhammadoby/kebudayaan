@@ -104,12 +104,11 @@ onUnmounted(() => {
         <div class="container py-4">
             <h1 class="text-2xl mb-2">Kebudayaan</h1>
             <div class="grid">
-                <div class="col-12 sm:col-6 md:col-4" v-for="data in cultureData.data" v-bind:key="data.id">
+                <div class="col-12 sm:col-6 md:col-4" v-for="data in cultureData.data.slice(0, 6)" v-bind:key="data.id">
                     <RouterLink :to="`/culture/${data.id}`">
                         <div class="culture-list-item py-4 px-3">
                             <div>
-                                <img :src="data.image" :alt="`image ${data.name}`"
-                                    class="w-full" />
+                                <img :src="data.image" :alt="`image ${data.name}`" class="w-full" />
                             </div>
                             <div>
                                 <h2 class="text-xl mb-0 mt-2">{{ data.name }}</h2>
@@ -134,7 +133,7 @@ onUnmounted(() => {
         <div class="container py-4">
             <h1 class="text-2xl mb-2">Acara</h1>
             <div class="grid">
-                <div class="col-12 sm:col-6 md:col-4" v-for="data in eventData.data" :key="data.id">
+                <div class="col-12 sm:col-6 md:col-4" v-for="data in eventData.data.slice(0, 6)" :key="data.id">
                     <RouterLink :to="`/event/${data.id}`">
                         <div class="event-list-item py-4 px-3">
                             <div>
@@ -297,7 +296,9 @@ onUnmounted(() => {
 }
 
 .culture-list-item:hover,
-.event-list-item:hover {
+.culture-list-item:visited,
+.event-list-item:hover,
+.event-list-item:visited {
     background-color: rgb(255, 255, 255);
     box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.08), 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 1px 4px -1px rgba(0, 0, 0, 0.1);
 }

@@ -16,6 +16,7 @@ const data = cultureData.getDataById(parseInt(route.params.id as string));
 if (!data) {
     router.replace('/notfound');
 }
+const relatedCulture = cultureData.data.slice(0, 2);
 const dataImage = ref([
     loadImage('grid-img1.jpg'),
     loadImage('grid-img2.jpg'),
@@ -224,27 +225,20 @@ const imageClick = (index: number) => {
                 <section class="related-culture">
                     <h1 class="main-title font-semibold mb-3">Tulisan serupa</h1>
                     <div class="grid">
-                        <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
-                            <div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80"
-                                    alt="hero image" class="border-round-md" />
+                        <div class="lg:col-12 sm:col-6 col-12 related-culture-item" v-for="data in relatedCulture"
+                            :key="data.id">
+                            <RouterLink :to="`/culture/${data.id}`" class="flex  gap-2">
+                                <div>
+                                    <img :src="data.image" width="80" :alt="`image ${data.name}`"
+                                        class="border-round-md" />
 
-                            </div>
-                            <div>
-                                <div class="text-lg font-medium"> Upacara Melasti</div>
-                                <div>Made Anggara</div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
-                            <div>
-                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80"
-                                    alt="hero image" class="border-round-md" />
+                                </div>
+                                <div>
+                                    <div class="text-lg font-medium"> {{ data.name }}</div>
+                                    <div>{{ data.writter }}</div>
+                                </div>
+                            </RouterLink>
 
-                            </div>
-                            <div>
-                                <div class="text-lg font-medium"> Hari Raya Nyepi</div>
-                                <div>Made Anggara</div>
-                            </div>
                         </div>
                     </div>
                 </section>

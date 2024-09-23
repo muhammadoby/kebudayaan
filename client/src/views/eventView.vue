@@ -5,6 +5,9 @@ const navState = navMainStore();
 
 navState.active = 'event';
 const eventData = eventStore();
+const formatNumber = (number: number) => {
+    return number.toLocaleString('id-ID').replace(',', '.');
+};
 </script>
 <template>
     <section class="min-h-screen" :style="{
@@ -33,7 +36,7 @@ const eventData = eventStore();
                                 </div>
                                 <div class="flex gap-2 mt-1">
                                     <i class="bi bi-ticket-perforated"></i>
-                                    <div>{{ data.price || 'Gratis' }}</div>
+                                    <div>{{ data.price ? formatNumber(data.price) : 'Gratis' }}</div>
                                 </div>
                                 <div class="flex gap-2 mt-1">
                                     <i class="bi bi-newspaper"></i>

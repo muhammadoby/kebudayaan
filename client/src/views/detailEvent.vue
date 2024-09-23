@@ -10,6 +10,8 @@ const data = eventData.getDataById(parseInt(route.params.id as string));
 if (!data) {
     router.replace('/notfound');
 }
+const relatedEvent = eventData.data.slice(0, 2);
+
 const nav = navMainStore();
 const isReportDialogVisible = ref(false);
 const showReportDialog = () => {
@@ -25,6 +27,9 @@ const formatTime = (date: Date) => {
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return date.toLocaleTimeString('id', { hour: '2-digit', minute: '2-digit', timeZone: userTimezone });
 }
+const formatNumber = (number: number) => {
+    return number.toLocaleString('id-ID').replace(',', '.');
+};
 nav.active = 'event';
 </script>
 <template>
@@ -89,7 +94,7 @@ nav.active = 'event';
                                 <i class="bi bi-ticket-perforated text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Harga Tiket</div>
-                                    <div>{{ data?.price || 'Gratis' }}</div>
+                                    <div>{{ data?.price ? formatNumber(data.price) : 'Gratis' }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4" v-if="data?.buyMethod">
@@ -175,27 +180,18 @@ nav.active = 'event';
                 <section class="related-culture">
                     <h1 class="main-title font-semibold mb-3">Acara serupa</h1>
                     <div class="grid">
-                        <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
-                            <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
-
-                            </div>
-                            <div>
-                                <div class="text-lg font-medium"> Pesta kesenian bali</div>
-                                <div>Gratis</div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
-                            <div>
-                                <img src="@/assets/image/home/grid-img1.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
-
-                            </div>
-                            <div>
-                                <div class="text-lg font-medium"> pesta kesenian bali</div>
-                                <div>Gratis </div>
-                            </div>
+                        <div class=" lg:col-12 sm:col-6 col-12 related-culture-item" v-for="data in relatedEvent"
+                            :key="data.id">
+                            <RouterLink :to="`/event/${data.id}`" class="flex gap-2">
+                                <div>
+                                    <img :src="data.image" width="80" :alt="`image ${data.name}`"
+                                        class="border-round-md img-event" />
+                                </div>
+                                <div>
+                                    <div class="text-lg font-medium"> {{ data.name }}</div>
+                                    <div>{{ data.price ? formatNumber(data.price) : 'Gratis' }}</div>
+                                </div>
+                            </RouterLink>
                         </div>
                     </div>
                 </section>
@@ -426,6 +422,9 @@ nav.active = 'event';
 }
 
 
+.img-event {
+    aspect-ratio: 3/2;
+}
 
 @media screen and (max-width: 576px) {
     .grid-hero>div:nth-child(1) {
