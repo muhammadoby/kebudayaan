@@ -46,7 +46,9 @@ const submitContactForm = async () => {
 </script>
 <template>
   <PrimeToast />
-  <div class="grid grid-nogutter">
+  <div class="grid grid-nogutter contact" :style="{
+    '--padding-top': `${navState.height}px`
+  }">
     <div class="side-content col-4 lg:flex hidden">
       <div>
         <div>
@@ -57,10 +59,10 @@ const submitContactForm = async () => {
         </div>
       </div>
     </div>
-    <div class="col-8">
+    <div class="lg:col-8 col-12 pb-4 h-full">
       <div class="flex flex-column align-items-center md:px-5 lg:px-3 px-4">
-        <div class="lg:min-h-screen w-full flex flex-column justify-content-center align-items-center pt-5">
-          <h1 class="contact-title text-center">Contact US</h1>
+        <div class="h-full w-full flex flex-column justify-content-center align-items-center pt-5">
+          <h1 class="contact-title text-center mt-1">Contact US</h1>
           <form class="contact-form pb-4" @submit.prevent="submitContactForm">
             <div class="input-group">
               <div class="contact-label-input">Name</div>
@@ -217,5 +219,10 @@ const submitContactForm = async () => {
   margin-right: 1px;
   font-size: 1.1rem;
   vertical-align: middle;
+}
+
+.contact {
+  padding-top: var(--padding-top);
+  min-height: calc(100vh - var(--padding-top));
 }
 </style>

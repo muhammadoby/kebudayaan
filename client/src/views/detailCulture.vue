@@ -3,10 +3,19 @@ import { ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
 import type { ComponentExposed } from 'vue-component-type-helpers';
 import type ImgDetail from '@/components/ImgDetail.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { cultureStore } from '@/stores/cultureStore';
 
 const loadImage = (imgName: string) => {
     return new URL(`/src/assets/image/home/${imgName}`, import.meta.url).toString();
 };
+const cultureData = cultureStore();
+const router = useRouter();
+const route = useRoute();
+const data = cultureData.getDataById(parseInt(route.params.id as string));
+if (!data) {
+    router.replace('/notfound');
+}
 const dataImage = ref([
     loadImage('grid-img1.jpg'),
     loadImage('grid-img2.jpg'),
@@ -18,6 +27,13 @@ const dataImage = ref([
 const imgDetail = ref<ComponentExposed<typeof ImgDetail>>();
 const nav = navMainStore();
 nav.active = 'culture';
+const showReportDialog = () => {
+    isReportDialogVisible.value = true;
+};
+const hideReportDialog = () => {
+    isReportDialogVisible.value = false;
+}
+const isReportDialogVisible = ref(false);
 const carouselResponsiveOptions = ref([
     {
         breakpoint: '767px',
@@ -43,8 +59,8 @@ const imageClick = (index: number) => {
             <div class="grid-hero">
                 <div class="flex align-items-end h-full pb-6 sm:pb-8">
                     <div>
-                        <h1 class="text-white font-semibold mb-0 hero-text-title">Tari Kecak</h1>
-                        <div class="text-xl text-white font-medium">Oleh Nyoman</div>
+                        <h1 class="text-white font-semibold mb-0 hero-text-title">{{ data?.name }}</h1>
+                        <div class="text-xl text-white font-medium">oleh {{ data?.writter }}</div>
                         <div class="flex text-blue mt-4 gap-4">
                             <div class="flex gap-2 align-items-center">
                                 <i class="bi bi-share-fill text-xl"></i>
@@ -59,7 +75,7 @@ const imageClick = (index: number) => {
                     </div>
                 </div>
                 <div class="relative">
-                    <img src="@/assets/image/home/grid-img1.jpg" class="w-full grid-hero-img px-1" alt="hero image" />
+                    <img :src="data?.image" class="w-full grid-hero-img px-1" alt="hero image" />
                     <div class="darken-gradient"></div>
                 </div>
             </div>
@@ -104,13 +120,7 @@ const imageClick = (index: number) => {
                 <section class="about-culture">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Kebudayaan</h1>
                     <div class="about-culture-content line-height-3">
-                        Tari Kecak adalah pertunjukan drama tari khas Bali yang umumnya mengangkat kisah
-                        Ramayana. Tarian ini ditarikan oleh puluhan penari laki-laki yang duduk secara
-                        melingkar.
-
-                        Mereka menyerukan "cak cak cak" sambil mengangkat kedua lengan. Pada satu segmen, mereka
-                        menirukan adegan saat barisan kera membantu Rama dalam pertempuran melawan Rahwana yang
-                        menculik Dewi Sita.
+                        {{ data?.description }}
                     </div>
                 </section>
                 <section class="information">
@@ -121,28 +131,28 @@ const imageClick = (index: number) => {
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Asal budaya</div>
-                                    <div>Bali</div>
+                                    <div>{{ data?.location }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penulis</div>
-                                    <div>Made Anggara</div>
+                                    <div>{{ data?.writter }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-calendar text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Tanggal dibuat</div>
-                                    <div>20/20/2020</div>
+                                    <div>{{ new Intl.DateTimeFormat('id').format(data?.date) }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-eye text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Dilihat</div>
-                                    <div>10 orang</div>
+                                    <div>{{ data?.view }} orang</div>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +198,23 @@ const imageClick = (index: number) => {
                     </div>
                 </section>
                 <section class="mt-4 mb-5">
-                    <div class="font-medium flex gap-3 align-items-center">
+                    <PrimeDialog v-model:visible="isReportDialogVisible" :draggable="false" modal
+                        :style="{ 'max-width': '400px', 'width': 'calc(100% - 10px)' }">
+                        <template #header>
+                            <div class="inline-flex items-center justify-center gap-2">
+                                <span class="font-bold whitespace-nowrap">Laporkan tulisan</span>
+                            </div>
+                        </template>
+                        <div>
+                            <textarea class="w-full input-report" placeholder="Berikan alasanmu" rows="4"></textarea>
+
+                        </div>
+                        <div class="mt-2">
+                            <button class="report-send-btn">Kirim</button>
+                            <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
+                        </div>
+                    </PrimeDialog>
+                    <div class="font-medium flex gap-3 align-items-center" @click="showReportDialog">
                         <i class="bi bi-flag text-lg"></i>
                         <div>Laporkan Tulisan</div>
                     </div>
@@ -200,8 +226,8 @@ const imageClick = (index: number) => {
                     <div class="grid">
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/ST_5670.jpg" width="80"
+                                    alt="hero image" class="border-round-md" />
 
                             </div>
                             <div>
@@ -211,8 +237,8 @@ const imageClick = (index: number) => {
                         </div>
                         <div class="flex gap-2 lg:col-12 sm:col-6 col-12 related-culture-item">
                             <div>
-                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80" alt="hero image"
-                                    class="border-round-md" />
+                                <img src="https://mmc.kalteng.go.id/files/berita/06032019114800_0.jpg" width="80"
+                                    alt="hero image" class="border-round-md" />
 
                             </div>
                             <div>
@@ -345,12 +371,39 @@ const imageClick = (index: number) => {
     padding: 8px 15PX;
 }
 
-.max-line-5 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    -webkit-box-orient: vertical;
+.report-send-btn {
+    border: 0;
+    font-weight: 600;
+    background-color: #00A3FF;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 8px;
+    transition: background-color 500ms;
+}
+
+.report-send-btn:hover {
+    background-color: #0f419e;
+}
+
+.report-cancel-btn {
+    border: 0;
+    font-weight: 600;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 8px;
+    background-color: rgb(228, 16, 16);
+    transition: background-color 500ms;
+}
+
+.report-cancel-btn:hover {
+    background-color: rgb(139, 13, 13);
+}
+
+.input-report {
+    padding: 10px;
+    border: solid 1px rgb(193, 194, 194);
+    border-radius: 8px;
+    outline: none;
 }
 
 .comment-send-btn {
@@ -361,10 +414,6 @@ const imageClick = (index: number) => {
     padding: 7px 20px;
     border-radius: 8px;
     transition: background-color 500ms;
-}
-
-.comment-send-btn:hover {
-    background-color: #0f419e;
 }
 
 .see-all-comment-btn {

@@ -10,10 +10,18 @@
                     <div>
                         <h1 class="font-semibold text-lg ">Ringkasan</h1>
                         <div class="font-normal">
-                            <div class="mt-2">Home</div>
-                            <div class="mt-2">Budaya</div>
-                            <div class="mt-2">Acara</div>
-                            <div class="mt-2">Contact</div>
+                            <div class="mt-2">
+                                <RouterLink to="/" class="footer-link">Home</RouterLink>
+                            </div>
+                            <div class="mt-2">
+                                <RouterLink to="/culture" class="footer-link">Budaya</RouterLink>
+                            </div>
+                            <div class="mt-2">
+                                <RouterLink to="/event" class="footer-link">Acara</RouterLink>
+                            </div>
+                            <div class="mt-2">
+                                <RouterLink to="/contact" class="footer-link">Contact</RouterLink>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-4">
@@ -89,5 +97,9 @@
 .copyright {
     padding: 10px;
     background-color: rgb(24, 23, 23);
+}
+
+.footer-link:hover {
+    text-decoration: underline;
 }
 </style>

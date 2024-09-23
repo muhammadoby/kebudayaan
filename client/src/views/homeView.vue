@@ -4,6 +4,7 @@ import { navMainStore } from '@/stores/navMain';
 const navMain = navMainStore();
 
 navMain.active = 'home';
+navMain.active = 'home';
 const navHeight = ref(0);
 let abortController: AbortController;
 const resize = () => {
@@ -203,9 +204,11 @@ onUnmounted(() => {
 
             </div>
             <div class="flex justify-content-center mt-4">
-                <button class="btn-see-another btn-blue">
-                    <RouterLink to="/culture">Lihat Lainnya</RouterLink>
-                </button>
+                <RouterLink to="/culture">
+                    <button class="btn-see-another btn-blue">
+                        Lihat Lainnya
+                    </button>
+                </RouterLink>
             </div>
         </div>
     </section>
@@ -301,9 +304,11 @@ onUnmounted(() => {
                 </div>
             </div>
             <div class="flex justify-content-center mt-4">
-                <button class="btn-blue">
-                    <RouterLink to="/event">Lihat Lainnya</RouterLink>
-                </button>
+                <RouterLink to="/event">
+                    <button class="btn-blue">
+                        Lihat Lainnya
+                    </button>
+                </RouterLink>
             </div>
         </div>
     </section>
@@ -439,7 +444,9 @@ onUnmounted(() => {
 
 .culture-list-item img,
 .event-list-item img {
+    aspect-ratio: 3/2;
     border-radius: 8px;
+    object-fit: cover;
 }
 
 .culture-list-item:hover,

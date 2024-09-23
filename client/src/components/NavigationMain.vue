@@ -1,43 +1,12 @@
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, onUnmounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { type ComponentExposed } from 'vue-component-type-helpers'
 import { navMainStore } from '@/stores/navMain';
-import NavSearch from './NavSearch.vue';
-const navSearch = ref<ComponentExposed<typeof NavSearch>>();
+import type NavigationMobile from './NavigationMobile.vue';
 
 const state = navMainStore();
 const nav = ref<HTMLElement>();
-const activeNavSearch = () => {
-    navSearch.value?.toggleActive(true);
-}
-const isAuth = ref(true);
-const profileDropDown = ref<HTMLDivElement>();
-const profileDropDownVisible = ref(false);
-const showProfileDropdown = () => {
-    if (!profileDropDownVisible.value) {
-        profileDropDownVisible.value = true;
-        setTimeout(async () => {
-            backdropEvent();
-        }, 0);
-        return;
-    }
-
-    profileDropDownVisible.value = false;
-    document.removeEventListener('click', backdropClick);
-
-};
-
-function backdropClick(evt: MouseEvent) {
-    const isClickInside = evt.composedPath().includes(profileDropDown.value as HTMLDivElement);
-    if (!isClickInside) {
-        document.removeEventListener('click', backdropClick);
-        profileDropDownVisible.value = false;
-    }
-}
-const backdropEvent = () => {
-
-    document.addEventListener('click', backdropClick);
-}
+const navMobile = ref<ComponentExposed<typeof NavigationMobile>>();
 
 onMounted(async () => {
     await nextTick();
@@ -45,9 +14,7 @@ onMounted(async () => {
 
 });
 
-onUnmounted(() => {
-    document.removeEventListener('click', backdropEvent);
-})
+
 
 </script>
 <template>
@@ -78,36 +45,15 @@ onUnmounted(() => {
                 </div>
             </div>
             <div class="justify-content-end w-full flex gap-4 align-items-center lg:flex hidden">
-                <div class="search relative hidden lg:block" @click="activeNavSearch">
-                    <i class="bi bi-search  search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Search" :value="navSearch?.searchModel" />
-                </div>
-                <div v-if="!isAuth" class=" align-items-center gap-4 hidden lg:flex">
-                    <div class="nav-login">Login</div>
-                    <div class="nav-register">Register</div>
-                </div>
-                <div v-else class=" align-items-center gap-4 hidden lg:flex">
-                    <div>
-                        <i class="bi bi-plus-square text-2xl text-gray"></i>
-                    </div>
-                    <div class="profile-pic relative" @click="showProfileDropdown">
-                        <div class="profile-dropdown shadow-4" ref="profileDropDown" v-if="profileDropDownVisible">
-                            <div>
-                                <RouterLink to="/editProfile/1">Edit profile</RouterLink>
-                            </div>
-                            <div>Logout</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:hidden">
+                <div class="lg:hidden" @click="navMobile?.toggleActive(true)">
                     <i class="bi bi-list text-3xl"></i>
                 </div>
             </div>
 
-
         </div>
     </nav>
-    <NavSearch ref="navSearch" />
+    <NavigationMobile ref="navMobile" />
+
 </template>
 <style scoped>
 .text-gray {
