@@ -1,7 +1,11 @@
+import { generateEventComment } from '@/util/commentGenerator';
 import {faker} from '@faker-js/faker';
 const randomStatus = () => {
     const status = ['Akan datang','Telah berakhir','Sedang berlangsung'];
     return status[faker.number.int({min: 0,max:status.length - 1})];
+}
+const randomNumber = (min: number,max: number) => {
+    return faker.number.int({min,max});
 }
 const randomStartDate = () =>  {
     return faker.date.between({ from: '2024-01-01', to: '2024-3-01' });
@@ -90,6 +94,12 @@ export default data.map((data,index) => {
         status: randomStatus(),
         startDate: randomStartDate(),
         endDate: randomEndDate(),
+        comment: Array.from({length: randomNumber(10,10) },(_,id) => {
+            return {
+                id,
+                ...generateEventComment()
+            }
+        }),
         ...data,
     }
 });

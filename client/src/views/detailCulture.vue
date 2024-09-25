@@ -5,7 +5,9 @@ import type { ComponentExposed } from 'vue-component-type-helpers';
 import type ImgDetail from '@/components/ImgDetail.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { cultureStore } from '@/stores/cultureStore';
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
 const loadImage = (imgName: string) => {
     return new URL(`/src/assets/image/home/${imgName}`, import.meta.url).toString();
 };
@@ -16,6 +18,7 @@ const data = cultureData.getDataById(parseInt(route.params.id as string));
 if (!data) {
     router.replace('/notfound');
 }
+const isLoading = ref(false);
 const relatedCulture = cultureData.data.slice(0, 2);
 const dataImage = ref([
     loadImage('grid-img1.jpg'),
@@ -47,13 +50,36 @@ const carouselResponsiveOptions = ref([
         numScroll: 1
     }
 ]);
+const seeMoreClick = () => {
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+        limit.value = limit.value + perPage;
+    }, 2000);
+}
+const perPage = 3;
+const limit = ref(perPage);
 const imageClick = (index: number) => {
     imgDetail.value?.setIndex(index);
     imgDetail.value?.toggleActive(true);
 };
+const inputComment = defineModel<string>('inputComment');
+const addComment = () => {
+    if (!inputComment.value) {
+        return;
+    }
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses menambahkan komentar', life: 3000
+    });
+    cultureData.addComment(data?.id as number, inputComment.value);
+    inputComment.value = '';
 
+}
 </script>
 <template>
+    <PrimeToast />
     <ImgDetail :img="dataImage" ref="imgDetail" />
     <section class="hero xl:h-screen flex align-items-center" :style="{ '--padding-top': `${nav.height}px` }">
         <div class="container-full ">
@@ -183,19 +209,26 @@ const imageClick = (index: number) => {
                             <div class="w-full">
                                 <div class="w-full">
                                     <textarea class="w-full px-3  py-2 border-round-lg comment-input" rows="3"
-                                        placeholder="Tambahkan komentar"></textarea>
+                                        v-model="inputComment" placeholder="Tambahkan komentar"></textarea>
                                 </div>
                                 <div class="mt-1">
-                                    <button class="comment-send-btn">Kirim</button>
+                                    <button class="comment-send-btn" @click="addComment">Kirim</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <CommentMain />
-                    <div class="text-center">
-                        <button class="see-all-comment-btn">Lihat komentar Lainnya</button>
+                    <CommentMain :limit="limit" :comments="data?.comment" />
+                    <div class="flex justify-content-center">
+                        <LoadingSpinner v-if="isLoading" />
+                    </div>
+                    <div class="text-center" v-if="!isLoading && (limit < (data?.comment.length ?? 0))">
+                        <button @click="seeMoreClick" class="see-all-comment-btn">
+                            Lihat {{
+                                Math.max((data?.comment.length ??
+                                    0) - limit, 0)
+                            }} komentar Lainnya </button>
                     </div>
                 </section>
                 <section class="mt-4 mb-5">

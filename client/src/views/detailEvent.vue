@@ -3,15 +3,17 @@ import { ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
 import { eventStore } from '@/stores/eventStore';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
 const route = useRoute();
 const router = useRouter();
 const eventData = eventStore();
+const toast = useToast();
 const data = eventData.getDataById(parseInt(route.params.id as string));
 if (!data) {
     router.replace('/notfound');
 }
+const isLoading = ref(false);
 const relatedEvent = eventData.data.slice(0, 2);
-
 const nav = navMainStore();
 const isReportDialogVisible = ref(false);
 const showReportDialog = () => {
@@ -30,9 +32,33 @@ const formatTime = (date: Date) => {
 const formatNumber = (number: number) => {
     return number.toLocaleString('id-ID').replace(',', '.');
 };
+const seeMoreClick = () => {
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+        limit.value = limit.value + perPage;
+    }, 2000);
+}
+const perPage = 3;
+const limit = ref(perPage);
+const inputComment = defineModel<string>('inputComment');
+const addComment = () => {
+    if (!inputComment.value) {
+        return;
+    }
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses menambahkan komentar', life: 3000
+    });
+    eventData.addComment(data?.id as number, inputComment.value);
+    inputComment.value = '';
+
+}
 nav.active = 'event';
 </script>
 <template>
+    <PrimeToast />
     <section class="hero lg:h-screen flex align-items-center text-white "
         :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${data?.image})` }">
         <div class="container-full flex justify-content-center flex-column align-items-center py-8">
@@ -138,19 +164,26 @@ nav.active = 'event';
                             <div class="w-full">
                                 <div class="w-full">
                                     <textarea class="w-full px-3  py-2 border-round-lg comment-input" rows="3"
-                                        placeholder="Tambahkan komentar"></textarea>
+                                        placeholder="Tambahkan komentar" v-model="inputComment"></textarea>
                                 </div>
                                 <div class="mt-1">
-                                    <button class="comment-send-btn">Kirim</button>
+                                    <button class="comment-send-btn" @click="addComment">Kirim</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <CommentMain />
-                    <div class="text-center">
-                        <button class="see-all-comment-btn">Lihat komentar Lainnya</button>
+                    <CommentMain :limit="limit" :comments="data?.comment" />
+                    <div class="flex justify-content-center">
+                        <LoadingSpinner v-if="isLoading" />
+                    </div>
+                    <div class="text-center" @click="seeMoreClick"
+                        v-if="!isLoading && (limit < (data?.comment.length ?? 0))">
+                        <button class="see-all-comment-btn">Lihat {{
+                            Math.max((data?.comment.length ??
+                                0) - limit, 0)
+                        }} komentar Lainnya</button>
                     </div>
                 </section>
                 <section class="mt-4 mb-5">

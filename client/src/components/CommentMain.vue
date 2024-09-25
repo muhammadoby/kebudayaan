@@ -1,9 +1,13 @@
 <script setup lang="ts">
+// import { userStore } from '@/stores/userStore';
+import type { Comment } from '@/type/comment';
 import type Popover from 'primevue/popover';
 import { ref } from 'vue';
 import type { ComponentExposed } from 'vue-component-type-helpers';
 
 const isDialogReplyVisible = ref(false);
+// const user = userStore();
+const currentComment = ref<Comment>();
 const selectedComment = ref<number>();
 const showDialogReply = (id: number) => {
     selectedComment.value = id;
@@ -15,31 +19,39 @@ const hideDialogReply = () => {
 }
 
 
-const toggleCommentOp = (evt: Event) => {
+const toggleCommentOp = (evt: Event, commentId: number) => {
     commentOp.value?.toggle(evt);
+    const comment = props.comments?.find((comment) => comment.id == commentId);
+    currentComment.value = comment;
 }
 
+const props = defineProps<{
+    limit: number,
+    comments: (Comment & { id: number })[] | undefined
+}>();
 const commentOp = ref<ComponentExposed<typeof Popover>>();
-
 </script>
 <template>
     <div class="comment-list mt-4">
-        <div class="comment-item">
+
+        <div class="comment-item" v-for="comment in props.comments?.slice(0, Math.min(props.comments.length, limit))"
+            :key="comment.id">
             <div class="comment-profile-pic">
-                <img src="@/assets/image/home/grid-img1.jpg" width="32" height="32" />
+                <img :src="comment.user.avatar" width="32" height="32" :alt="`Image ${comment.user.name}`" />
             </div>
             <div>
                 <div class="flex justify-content-between">
-                    <div class="font-medium pb-1">Putu Adi</div>
-                    <div class="text-lg comment-btn-action" @click="toggleCommentOp">
+                    <div class=" pb-1 flex gap-1 align-items-center">
+                        <div class="font-medium">{{ comment.user.name }}</div>
+                        <div>•</div>
+                        <div class="text-sm"> {{ comment.created_date.toLocaleDateString('id') }}</div>
+                    </div>
+                    <div class="text-lg comment-btn-action" @click="toggleCommentOp($event, comment.id)">
                         <i class="bi bi-three-dots-vertical"></i>
                     </div>
-
                 </div>
                 <div class="comment-content">
-                    Indonesia kaya banget sama budaya! 😍 Dari Sabang sampai Merauke, tiap daerah punya tradisi, bahasa,
-                    dan adat istiadat yang keren banget. Bangga jadi orang Indonesia! 🇮🇩❤️ Ayo kita jaga dan
-                    lestarikan budaya kita biar nggak hilang ditelan zaman 🙌 #BanggaBudayaIndonesia #LestarikanBudaya
+                    {{ comment.comment }}
                 </div>
                 <div class="mt-2 flex gap-4">
 
@@ -55,11 +67,11 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
 
         </div>
 
-
     </div>
     <PrimePopover ref="commentOp">
         <div class="comment-action-list">
             <div>Laporkan komentar</div>
+            <!-- <div v-if="currentComment?.user.id === user.user.id">Hapus komentar</div> -->
         </div>
     </PrimePopover>
     <PrimeDialog v-model:visible="isDialogReplyVisible" :draggable="false" modal
@@ -81,6 +93,7 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
 </template>
 <style scoped>
 .comment-item {
+    padding-bottom: 20px;
     column-gap: 15px;
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -132,5 +145,15 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
     border: solid 1px rgb(193, 194, 194);
     border-radius: 8px;
     outline: none;
+}
+
+.comment-action-list {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.comment-action-list>div:hover {
+    background-color: rgb(246, 246, 246);
 }
 </style>
