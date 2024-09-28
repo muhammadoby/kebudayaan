@@ -43,8 +43,8 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
                 <div class="flex justify-content-between">
                     <div class=" pb-1 flex gap-1 align-items-center">
                         <div class="font-medium">{{ comment.user.name }}</div>
-                        <div>•</div>
-                        <div class="text-sm"> {{ comment.created_date.toLocaleDateString('id') }}</div>
+                        <!-- <div>•</div>
+                        <div class="text-sm"> {{ comment.created_date.toLocaleDateString('id') }}</div> -->
                     </div>
                     <div class="text-lg comment-btn-action" @click="toggleCommentOp($event, comment.id)">
                         <i class="bi bi-three-dots-vertical"></i>

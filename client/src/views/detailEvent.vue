@@ -4,6 +4,7 @@ import { navMainStore } from '@/stores/navMain';
 import { eventStore } from '@/stores/eventStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+
 const route = useRoute();
 const router = useRouter();
 const eventData = eventStore();
@@ -15,6 +16,7 @@ if (!data) {
 const isLoading = ref(false);
 const relatedEvent = eventData.data.slice(0, 2);
 const nav = navMainStore();
+nav.active = 'event';
 const isReportDialogVisible = ref(false);
 const showReportDialog = () => {
     isReportDialogVisible.value = true;
@@ -55,7 +57,21 @@ const addComment = () => {
     inputComment.value = '';
 
 }
-nav.active = 'event';
+const reportSend = () => {
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses melaporkan acara'
+    });
+    hideReportDialog();
+}
+const shareDialogVisibility = ref(false);
+const showShareDialog = () => {
+    shareDialogVisibility.value = true;
+}
+const getCurrentUrl = () => {
+    return new URL(route.fullPath, import.meta.url).href;
+}
 </script>
 <template>
     <PrimeToast />
@@ -65,7 +81,8 @@ nav.active = 'event';
             <div class=" hero-text-title font-medium">{{ data?.name }}</div>
             <div class="mt-2 text-2xl font-medium">{{ data?.status }}</div>
             <div class="flex text-blue mt-4 gap-4">
-                <div class="flex gap-2 align-items-center">
+                <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
+                <div class="flex gap-2 align-items-center" @click="showShareDialog">
                     <i class="bi bi-share-fill text-xl"></i>
                     <div>Bagikan</div>
                 </div>
@@ -199,7 +216,7 @@ nav.active = 'event';
 
                         </div>
                         <div class="mt-2">
-                            <button class="report-send-btn">Kirim</button>
+                            <button class="report-send-btn" @click="reportSend">Kirim</button>
                             <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
                         </div>
                     </PrimeDialog>
@@ -441,6 +458,14 @@ nav.active = 'event';
     outline: none;
 }
 
+.img-event {
+    aspect-ratio: 3/2;
+}
+
+.comment-input {
+    border: solid 1px;
+}
+
 @media (max-width: 992px) {
     .grid-hero>div:nth-child(1) {
         grid-column: 1/-1;
@@ -452,11 +477,6 @@ nav.active = 'event';
         grid-column: 1 / -1;
         grid-row: 1;
     }
-}
-
-
-.img-event {
-    aspect-ratio: 3/2;
 }
 
 @media screen and (max-width: 576px) {

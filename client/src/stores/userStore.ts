@@ -10,6 +10,16 @@ export const userStore = defineStore('user',() => {
             avatar: new URL('/src/assets/image/avatar/avatar1.jpg',import.meta.url).href
         }
     );
+    const bookmark = ref<Set<number>>(new Set());
+    const addBookmark = (id: number) => {
+        bookmark.value.add(id);
+    }
+    const removeBookmark = (id:number) => {
+        bookmark.value.delete(id);
+    }
+    const hasBookmark = (id: number) => {
+        return bookmark.value.has(id);
+    }; 
     if(localStorage.getItem('user')){
         user.value = JSON.parse(localStorage.getItem('user') as string) as User;
     }else{
@@ -17,6 +27,6 @@ export const userStore = defineStore('user',() => {
     }
     
 
-    return {user};
+    return {user,bookmark,addBookmark,removeBookmark,hasBookmark};
 });
 

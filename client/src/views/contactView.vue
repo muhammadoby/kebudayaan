@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { navMainStore } from "@/stores/navMain";
-import { submitForm } from "@/service/apiService";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
+import z from 'zod';
 const toast = useToast();
 
 const navState = navMainStore();
@@ -11,8 +11,8 @@ navState.active = 'contact';
 const showSuccess = () => {
   toast.add({
     severity: "success",
-    summary: "Success Message",
-    detail: "Successfully submitted",
+    summary: "Pesan terkirim",
+    detail: "Pesan berhasil dikirim",
     life: 3000,
   });
 };
@@ -32,16 +32,41 @@ const formData = ref({
 });
 
 const submitContactForm = async () => {
-  const endpoint = "http://localhost:8000/api/1.0/contactus";
-  const response = await submitForm(endpoint, formData.value, errors);
-  if (response) {
-    console.log("Contact form submitted:", response);
-    showSuccess();
-    formData.value.email = "";
-    formData.value.name = "";
-    formData.value.phone = "";
-    formData.value.message = "";
+  Object.keys(errors.value).forEach((key) => {
+    errors.value[key as keyof typeof errors['value']] = '';
+  });
+  const validator = z.object({
+    name: z.string().min(1, {
+      'message': 'Nama wajib diisi'
+    }),
+    email: z.string().min(1, {
+      message: 'Email wajib diisi'
+    }).email({
+      message: 'Email tidak valid'
+    }),
+    phone: z.string().min(1, {
+      message: 'Nomor telepon wajib diisi'
+    }),
+    message: z.string().min(1, {
+      message: 'Pesan wajib diisi wajib diisi'
+    })
+  });
+  const safeValidate = validator.safeParse(formData.value);
+  if (!safeValidate.success) {
+    const error = safeValidate.error.flatten().fieldErrors;
+    Object.keys(error).forEach((key) => {
+      type keyType = keyof typeof errors.value;
+      errors.value[key as keyType] = (error[key as keyType] as Exclude<typeof error[keyType], undefined>)[0];
+    });
+    return;
   }
+
+  showSuccess();
+  Object.keys(formData.value).forEach((key) => {
+    formData.value[key as keyof typeof formData['value']] = '';
+  });
+
+  // }
 };
 </script>
 <template>
@@ -55,7 +80,7 @@ const submitContactForm = async () => {
           <div class="font-medium side-content-brand-name">CONTACT US</div>
         </div>
         <div class="mt-3">
-          <div>Sampaikan Pesan Anda Melalui Form Di Bawah</div>
+          <div>Sampaikan Pesan Anda Melalui Form</div>
         </div>
       </div>
     </div>
