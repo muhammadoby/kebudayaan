@@ -5,6 +5,7 @@ import { eventStore } from '@/stores/eventStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { google } from 'calendar-link';
+import { eventConstant, eventStatus } from '@/data/event';
 
 const route = useRoute();
 const router = useRouter();
@@ -91,17 +92,18 @@ const openCalendar = () => {
         :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${event?.image})` }">
         <div class="container-full flex justify-content-center flex-column align-items-center py-8">
             <div class=" hero-text-title font-medium">{{ event?.name }}</div>
-            <div class="mt-2 text-2xl font-medium">{{ event?.status }}</div>
+            <div class="mt-2 text-2xl font-medium">{{ eventStatus[event?.status as number] }}</div>
             <div class="flex text-blue mt-4 gap-4">
                 <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
-                <div class="flex gap-2 align-items-center" @click="showShareDialog">
+                <button class="btn-transparent flex gap-2 align-items-center" @click="showShareDialog">
                     <i class="bi bi-share-fill text-xl"></i>
                     <div>Bagikan</div>
-                </div>
-                <div class="flex gap-2 align-items-center" @click="openCalendar">
+                </button>
+                <button class="btn-transparent flex gap-2 align-items-center" @click="openCalendar"
+                    v-if="event?.status !== eventConstant.status.ended">
                     <i class="bi bi-calendar text-xl"></i>
                     <div>Tambahkan ke kalender</div>
-                </div>
+                </button>
             </div>
         </div>
     </section>
@@ -207,9 +209,8 @@ const openCalendar = () => {
                     <div class="flex justify-content-center">
                         <LoadingSpinner v-if="isLoading" />
                     </div>
-                    <div class="text-center" @click="seeMoreClick"
-                        v-if="!isLoading && (limit < (event?.comment.length ?? 0))">
-                        <button class="see-all-comment-btn">Lihat {{
+                    <div class="text-center" v-if="!isLoading && (limit < (event?.comment.length ?? 0))">
+                        <button class="see-all-comment-btn" @click="seeMoreClick">Lihat {{
                             Math.max((event?.comment.length ??
                                 0) - limit, 0)
                         }} komentar Lainnya</button>

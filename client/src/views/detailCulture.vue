@@ -117,18 +117,19 @@ const getCurrentUrl = () => {
                             <div class="flex gap-2 align-items-center">
                                 <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
                                 <i class="bi bi-share-fill text-xl"></i>
-                                <div class="hidden sm:block" @click="showShareDialog">Bagikan</div>
+                                <button class="btn-transparent hidden sm:block"
+                                    @click="showShareDialog">Bagikan</button>
                             </div>
-                            <div class="flex gap-2 align-items-center" @click="addBookmark"
+                            <button class="btn-transparent flex gap-2 align-items-center" @click="addBookmark"
                                 v-if="!userData.hasBookmark(culture?.id as number)">
                                 <i class="bi bi-bookmark-fill text-xl"></i>
                                 <div class="hidden sm:block">Tambahkan ke bookmark</div>
-                            </div>
-                            <div class="flex gap-2 align-items-center" @click="removeBookmark"
+                            </button>
+                            <button class="btn-transparent flex gap-2 align-items-center" @click="removeBookmark"
                                 v-if="userData.hasBookmark(culture?.id as number)">
                                 <i class="bi bi-bookmark-check text-xl"></i>
                                 <div class="hidden sm:block">Hapus dari bookmark</div>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,9 +163,9 @@ const getCurrentUrl = () => {
                             </svg>
                         </template>
                         <template #item="props">
-                            <div class="px-2" @click="imageClick(props.index)">
+                            <button class="btn-transparent px-2" @click="imageClick(props.index)">
                                 <img :src="props.data" class="w-full bright border-round-md" alt="carousel image" />
-                            </div>
+                            </button>
                         </template>
                         <template #nexticon>
                             <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px"

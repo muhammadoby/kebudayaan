@@ -95,6 +95,12 @@
     -webkit-box-orient: vertical;
   }
 
+  .btn-transparent{
+    border: none;
+    background-color: inherit;
+    color: inherit;
+  }
+
   @media (min-width: 576px) {
     .container-full {
       width: 100%;
