@@ -1,16 +1,39 @@
 <script setup lang="ts">
-// import { userStore } from '@/stores/userStore';
+import { userStore } from '@/stores/userStore';
 import type { Comment } from '@/type/comment';
 import type Popover from 'primevue/popover';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import type { ComponentExposed } from 'vue-component-type-helpers';
 
 const isDialogReplyVisible = ref(false);
-// const user = userStore();
-const currentComment = ref<Comment>();
-const selectedComment = ref<number>();
+const user = userStore();
+const replyInput = defineModel<string>('replyInput');
+
+const props = defineProps<{
+    limit: number,
+    comments: (Comment & { id: number })[] | undefined
+}>();
+
+const comments = ref(
+    props.comments?.map((comment) => {
+        return {
+            ...comment,
+            isReplyhided: true,
+        }
+    })
+);
+
+watch(props!.comments!, () => {
+    comments.value = props.comments?.map((comment) => {
+        return {
+            ...comment,
+            isReplyhided: true,
+        }
+    });
+});
+const currentComment = ref<NonNullable<typeof comments.value>[number]>();
 const showDialogReply = (id: number) => {
-    selectedComment.value = id;
+    currentComment.value = comments.value?.find((comment) => comment.id === id);
     isDialogReplyVisible.value = true;
 }
 
@@ -21,20 +44,45 @@ const hideDialogReply = () => {
 
 const toggleCommentOp = (evt: Event, commentId: number) => {
     commentOp.value?.toggle(evt);
-    const comment = props.comments?.find((comment) => comment.id == commentId);
+    const comment = comments.value?.find((comment) => comment.id == commentId);
     currentComment.value = comment;
 }
 
-const props = defineProps<{
-    limit: number,
-    comments: (Comment & { id: number })[] | undefined
-}>();
+
+
+const submitReply = () => {
+    currentComment!.value!.reply = [...currentComment!.value!.reply, {
+        user: user.user,
+        comment: replyInput.value as string,
+        created_date: new Date()
+    }];
+    currentComment!.value!.isReplyhided! = false;
+    replyInput.value = '';
+    hideDialogReply();
+}
+const addIdToArray = function <T extends object>(arr: T[]): ({ id: number } & T)[] {
+    return arr.map((el, index) => {
+        return {
+            id: index,
+            ...el
+        }
+    });
+}
+
+const showReply = (commentId: number) => {
+    const comment = comments.value?.find((comment) => commentId === comment?.id);
+    comment!.isReplyhided = false;
+};
+const hideReply = (commentId: number) => {
+    const comment = comments.value?.find((comment) => commentId === comment?.id);
+    comment!.isReplyhided = true;
+}
 const commentOp = ref<ComponentExposed<typeof Popover>>();
 </script>
 <template>
     <div class="comment-list mt-4">
 
-        <div class="comment-item" v-for="comment in props.comments?.slice(0, Math.min(props.comments.length, limit))"
+        <div class="comment-item" v-for="comment in comments?.slice(0, Math.min(comments.length, limit))"
             :key="comment.id">
             <div class="comment-profile-pic">
                 <img :src="comment.user.avatar" width="32" height="32" :alt="`Image ${comment.user.name}`" />
@@ -53,15 +101,45 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
                 <div class="comment-content">
                     {{ comment.comment }}
                 </div>
-                <div class="mt-2 flex gap-4">
+                <div class="mt-2 flex gap-3">
 
-                    <div class="flex gap-2 align-items-center font-medium" @click="showDialogReply(0)">
+                    <button class="btn-transparent flex gap-2 align-items-center font-medium"
+                        @click="showDialogReply(comment.id)">
                         <i class="bi bi-chat text-xl"></i>
                         Balas
-                    </div>
-                    <!-- <div class="flex gap-2 align-items-center font-medium">
+                    </button>
+                    <button class="flex btn-transparent gap-2 align-items-center font-medium"
+                        v-if="comment.reply.length && comment.isReplyhided" @click="showReply(comment.id)">
                         Lihat Balasan
-                    </div> -->
+                    </button>
+                    <div class="flex gap-2 align-items-center font-medium"
+                        v-if="comment.reply.length && !comment.isReplyhided" @click="hideReply(comment.id)">
+                        Sembunyikan balasan
+                    </div>
+                </div>
+                <div class="mt-2 flex flex-column " v-if="comment.reply.length && !comment.isReplyhided">
+                    <div class="comment-item reply-item pl-3 pt-3" v-for="reply in addIdToArray(comment.reply)"
+                        :key="reply.id">
+                        <div class="comment-profile-pic">
+                            <img :src="reply.user.avatar" width="32" height="32" />
+                        </div>
+                        <div>
+                            <div class="flex justify-content-between">
+                                <div class=" pb-1 flex gap-1 align-items-center">
+                                    <div class="font-medium">{{ reply.user.name }}</div>
+                                    <!-- <div>•</div>
+                        <div class="text-sm"> {{ comment.created_date.toLocaleDateString('id') }}</div> -->
+                                </div>
+                                <div class="text-lg comment-btn-action" @click="toggleCommentOp($event, comment.id)">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                {{ reply.comment }}
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -82,11 +160,11 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
             </div>
         </template>
         <div>
-            <textarea class="w-full input-comment-reply" placeholder="Balas" rows="4"></textarea>
+            <textarea class="w-full input-comment-reply" placeholder="Balas" rows="4" v-model="replyInput"></textarea>
 
         </div>
         <div class="mt-2">
-            <button class="comment-send-btn">Kirim</button>
+            <button class="comment-send-btn" @click="submitReply">Kirim</button>
             <button class="comment-reply-cancel-btn ml-3" @click="hideDialogReply">Batal</button>
         </div>
     </PrimeDialog>
@@ -120,6 +198,10 @@ const commentOp = ref<ComponentExposed<typeof Popover>>();
     padding: 7px 20px;
     border-radius: 8px;
     transition: background-color 500ms;
+}
+
+.reply-item:nth-child(even) {
+    background-color: rgb(249, 239, 239);
 }
 
 .comment-send-btn:hover {

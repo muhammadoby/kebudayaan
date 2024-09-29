@@ -74,7 +74,8 @@ const addComment = () => {
     toast.add({
         severity: 'success',
         summary: 'Sukses',
-        detail: 'Sukses menambahkan komentar'
+        detail: 'Sukses menambahkan komentar',
+        life: 3000
     });
     cultureData.addComment(culture?.id as number, inputComment.value);
     inputComment.value = '';
@@ -85,7 +86,8 @@ const reportSend = () => {
     toast.add({
         severity: 'success',
         summary: 'Sukses',
-        detail: 'Sukses melaporkan tulisan'
+        detail: 'Sukses melaporkan tulisan',
+        life: 3000
     });
     hideReportDialog();
 }
@@ -236,7 +238,7 @@ const getCurrentUrl = () => {
                     <div>
                         <div class="flex gap-3 ">
                             <div class="comment-profile-pic">
-                                <img src="@/assets/image/home/grid-img1.jpg" width="32" height="32" />
+                                <img :src="userData.user.avatar" width="32" height="32" />
                             </div>
                             <div class="w-full">
                                 <div class="w-full">

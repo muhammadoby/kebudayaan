@@ -24,8 +24,24 @@ export const cultureStore = defineStore('culture',() => {
             reply: [],
             created_date: new Date()
         });
-
     }
 
-    return {data,getDataById,addComment};
+    const addReply = (cultureId: number,commentId: number,reply: string) => {
+        const culture = data.value.find((culture) => culture.id === cultureId);
+        const comment = culture?.comment.find((comment) => {comment.id === commentId});
+
+        comment?.reply.push({
+            user: currentUser.user,
+            comment: reply,
+            created_date: new Date()
+        });
+    }
+
+    const getReply = (cultureId: number,commentId: number) => {
+        const culture = data.value.find((culture) => culture.id === cultureId);
+        const comment = culture?.comment.find((comment) => {comment.id === commentId});
+
+        return comment?.reply;
+    }
+    return {data,getDataById,addComment,addReply,getReply};
 });

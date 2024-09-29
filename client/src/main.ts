@@ -11,7 +11,7 @@ const app = createApp(App);
 const preset = definePreset(Aura,{
   components: {
     toast: {
-      width: 'clamp(20rem,10vw + 5rem,25rem)'
+      width: 'clamp(20rem,20vw + 10rem,25rem)'
     }
   }
 });
