@@ -4,13 +4,14 @@ import { navMainStore } from '@/stores/navMain';
 import { eventStore } from '@/stores/eventStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+import { google } from 'calendar-link';
 
 const route = useRoute();
 const router = useRouter();
 const eventData = eventStore();
 const toast = useToast();
-const data = eventData.getDataById(parseInt(route.params.id as string));
-if (!data) {
+const event = eventData.getDataById(parseInt(route.params.id as string));
+if (!event) {
     router.replace('/notfound');
 }
 const isLoading = ref(false);
@@ -53,7 +54,7 @@ const addComment = () => {
         summary: 'Sukses',
         detail: 'Sukses menambahkan komentar', life: 3000
     });
-    eventData.addComment(data?.id as number, inputComment.value);
+    eventData.addComment(event?.id as number, inputComment.value);
     inputComment.value = '';
 
 }
@@ -72,21 +73,32 @@ const showShareDialog = () => {
 const getCurrentUrl = () => {
     return new URL(route.fullPath, import.meta.url).href;
 }
+const openCalendar = () => {
+    const url = google({
+        title: event?.name as string,
+        start: event?.startDate,
+        end: event?.endDate,
+        location: event?.location,
+        description: event?.description.replace(/\s\s+/g, ' ')
+    });
+
+    window.open(url);
+}
 </script>
 <template>
     <PrimeToast />
     <section class="hero lg:h-screen flex align-items-center text-white "
-        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${data?.image})` }">
+        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${event?.image})` }">
         <div class="container-full flex justify-content-center flex-column align-items-center py-8">
-            <div class=" hero-text-title font-medium">{{ data?.name }}</div>
-            <div class="mt-2 text-2xl font-medium">{{ data?.status }}</div>
+            <div class=" hero-text-title font-medium">{{ event?.name }}</div>
+            <div class="mt-2 text-2xl font-medium">{{ event?.status }}</div>
             <div class="flex text-blue mt-4 gap-4">
                 <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
                 <div class="flex gap-2 align-items-center" @click="showShareDialog">
                     <i class="bi bi-share-fill text-xl"></i>
                     <div>Bagikan</div>
                 </div>
-                <div class="flex gap-2 align-items-center">
+                <div class="flex gap-2 align-items-center" @click="openCalendar">
                     <i class="bi bi-calendar text-xl"></i>
                     <div>Tambahkan ke kalender</div>
                 </div>
@@ -99,7 +111,7 @@ const getCurrentUrl = () => {
                 <section class="about">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Acara</h1>
                     <div class="line-height-3">
-                        {{ data?.description }}
+                        {{ event?.description }}
                     </div>
                 </section>
                 <section class="information">
@@ -110,14 +122,14 @@ const getCurrentUrl = () => {
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Lokasi acara</div>
-                                    <div>{{ data?.location }}</div>
+                                    <div>{{ event?.location }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penyelenggara</div>
-                                    <div>{{ data?.organizer }}</div>
+                                    <div>{{ event?.organizer }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
@@ -125,11 +137,11 @@ const getCurrentUrl = () => {
                                 <div>
                                     <div class="font-semibold">Jadwal Acara</div>
                                     <div>
-                                        {{ formatDate(data?.startDate as Date) }}
-                                        ({{ formatTime(data?.startDate as Date) }})
+                                        {{ formatDate(event?.startDate as Date) }}
+                                        ({{ formatTime(event?.startDate as Date) }})
                                         -
-                                        {{ formatDate(data?.endDate as Date) }}
-                                        ({{ formatTime(data?.endDate as Date) }})
+                                        {{ formatDate(event?.endDate as Date) }}
+                                        ({{ formatTime(event?.endDate as Date) }})
                                     </div>
                                 </div>
                             </div>
@@ -137,21 +149,21 @@ const getCurrentUrl = () => {
                                 <i class="bi bi-ticket-perforated text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Harga Tiket</div>
-                                    <div>{{ data?.price ? formatNumber(data.price) : 'Gratis' }}</div>
+                                    <div>{{ event?.price ? formatNumber(event.price) : 'Gratis' }}</div>
                                 </div>
                             </div>
-                            <div class="flex gap-3 mt-4" v-if="data?.buyMethod">
+                            <div class="flex gap-3 mt-4" v-if="event?.buyMethod">
                                 <i class="bi bi-patch-question text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Cara membeli</div>
-                                    <div>{{ data?.buyMethod }}</div>
+                                    <div>{{ event?.buyMethod }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-eye text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Dilihat</div>
-                                    <div>{{ data?.view }} orang</div>
+                                    <div>{{ event?.view }} orang</div>
                                 </div>
                             </div>
                         </div>
@@ -191,14 +203,14 @@ const getCurrentUrl = () => {
                         </div>
                     </div>
 
-                    <CommentMain :limit="limit" :comments="data?.comment" />
+                    <CommentMain :limit="limit" :comments="event?.comment" />
                     <div class="flex justify-content-center">
                         <LoadingSpinner v-if="isLoading" />
                     </div>
                     <div class="text-center" @click="seeMoreClick"
-                        v-if="!isLoading && (limit < (data?.comment.length ?? 0))">
+                        v-if="!isLoading && (limit < (event?.comment.length ?? 0))">
                         <button class="see-all-comment-btn">Lihat {{
-                            Math.max((data?.comment.length ??
+                            Math.max((event?.comment.length ??
                                 0) - limit, 0)
                         }} komentar Lainnya</button>
                     </div>
