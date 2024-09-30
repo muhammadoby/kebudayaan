@@ -1,4 +1,8 @@
+import { generateCultureComment } from '@/util/commentGenerator';
 import {faker} from '@faker-js/faker';
+const randomNumber = (min: number,max: number) => {
+    return faker.number.int({min,max});
+}
 const viewOption = {min: 10,max: 100};
 const data =  [
     {
@@ -66,10 +70,15 @@ const data =  [
 
 export default data.map((data,index) => {
     return {
-        ...data,
         id: index,
         view: faker.number.int(viewOption),
-        date: faker.date.between({ from: '2022-01-01', to: Date.now() })
-
+        date: faker.date.between({ from: '2022-01-01', to: Date.now() }),
+        comment: Array.from({length: randomNumber(10,10) },(_,id) => {
+            return {
+                id,
+                ...generateCultureComment()
+            }
+        }),
+        ...data,
     }
 })

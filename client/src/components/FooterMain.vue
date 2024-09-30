@@ -28,13 +28,13 @@
                         <h1 class="font-semibold text-lg mb-0">Sosial Media</h1>
                         <div class="flex gap-3">
                             <div class="mt-2">
-                                <img src="@/assets/image/icon/ic-instagram.svg" width="25" />
+                                <img src="@/assets/image/icon/ic-instagram.svg" width="25" alt="Instagram" />
                             </div>
                             <div class="mt-2">
-                                <img src="@/assets/image/icon/ic-facebook.svg" width="25" />
+                                <img src="@/assets/image/icon/ic-facebook.svg" width="25" alt="Facebook" />
                             </div>
                             <div class="mt-2">
-                                <img src="@/assets/image/icon/ic-twitter.svg" width="30" />
+                                <img src="@/assets/image/icon/ic-twitter.svg" width="30" alt="Twitter" />
                             </div>
                         </div>
                     </div>
@@ -54,22 +54,22 @@
                     <div class="grid">
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/footer/footer1.png" class="w-full" />
+                                <img src="@/assets/image/footer/footer1.png" class="w-full" alt="Image gallery" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/footer/footer2.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer2.jpg" class="w-full" alt="Image gallery" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/footer/footer3.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer3.jpg" class="w-full" alt="Image gallery" />
                             </div>
                         </div>
                         <div class="col-6">
                             <div>
-                                <img src="@/assets/image/footer/footer4.jpg" class="w-full" />
+                                <img src="@/assets/image/footer/footer4.jpg" class="w-full" alt="Image galleryp" />
                             </div>
                         </div>
 

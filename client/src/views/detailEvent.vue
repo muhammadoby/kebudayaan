@@ -3,16 +3,22 @@ import { ref } from 'vue';
 import { navMainStore } from '@/stores/navMain';
 import { eventStore } from '@/stores/eventStore';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
+import { google } from 'calendar-link';
+import { eventConstant, eventStatus } from '@/data/event';
+
 const route = useRoute();
 const router = useRouter();
 const eventData = eventStore();
-const data = eventData.getDataById(parseInt(route.params.id as string));
-if (!data) {
+const toast = useToast();
+const event = eventData.getDataById(parseInt(route.params.id as string));
+if (!event) {
     router.replace('/notfound');
 }
+const isLoading = ref(false);
 const relatedEvent = eventData.data.slice(0, 2);
-
 const nav = navMainStore();
+nav.active = 'event';
 const isReportDialogVisible = ref(false);
 const showReportDialog = () => {
     isReportDialogVisible.value = true;
@@ -30,23 +36,74 @@ const formatTime = (date: Date) => {
 const formatNumber = (number: number) => {
     return number.toLocaleString('id-ID').replace(',', '.');
 };
-nav.active = 'event';
+const seeMoreClick = () => {
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+        limit.value = limit.value + perPage;
+    }, 2000);
+}
+const perPage = 3;
+const limit = ref(perPage);
+const inputComment = defineModel<string>('inputComment');
+const addComment = () => {
+    if (!inputComment.value) {
+        return;
+    }
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses menambahkan komentar', life: 3000
+    });
+    eventData.addComment(event?.id as number, inputComment.value);
+    inputComment.value = '';
+
+}
+const reportSend = () => {
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses melaporkan acara'
+    });
+    hideReportDialog();
+}
+const shareDialogVisibility = ref(false);
+const showShareDialog = () => {
+    shareDialogVisibility.value = true;
+}
+const getCurrentUrl = () => {
+    return new URL(route.fullPath, import.meta.url).href;
+}
+const openCalendar = () => {
+    const url = google({
+        title: event?.name as string,
+        start: event?.startDate,
+        end: event?.endDate,
+        location: event?.location,
+        description: event?.description.replace(/\s\s+/g, ' ')
+    });
+
+    window.open(url);
+}
 </script>
 <template>
+    <PrimeToast />
     <section class="hero lg:h-screen flex align-items-center text-white "
-        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${data?.image})` }">
+        :style="{ '--padding-top': `${nav.height}px`, '--background-image': `url(${event?.image})` }">
         <div class="container-full flex justify-content-center flex-column align-items-center py-8">
-            <div class=" hero-text-title font-medium">{{ data?.name }}</div>
-            <div class="mt-2 text-2xl font-medium">{{ data?.status }}</div>
+            <div class=" hero-text-title font-medium">{{ event?.name }}</div>
+            <div class="mt-2 text-2xl font-medium">{{ eventStatus[event?.status as number] }}</div>
             <div class="flex text-blue mt-4 gap-4">
-                <div class="flex gap-2 align-items-center">
+                <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
+                <button class="btn-transparent flex gap-2 align-items-center" @click="showShareDialog">
                     <i class="bi bi-share-fill text-xl"></i>
                     <div>Bagikan</div>
-                </div>
-                <div class="flex gap-2 align-items-center">
+                </button>
+                <button class="btn-transparent flex gap-2 align-items-center" @click="openCalendar"
+                    v-if="event?.status !== eventConstant.status.ended">
                     <i class="bi bi-calendar text-xl"></i>
                     <div>Tambahkan ke kalender</div>
-                </div>
+                </button>
             </div>
         </div>
     </section>
@@ -56,7 +113,7 @@ nav.active = 'event';
                 <section class="about">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Acara</h1>
                     <div class="line-height-3">
-                        {{ data?.description }}
+                        {{ event?.description }}
                     </div>
                 </section>
                 <section class="information">
@@ -67,14 +124,14 @@ nav.active = 'event';
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Lokasi acara</div>
-                                    <div>{{ data?.location }}</div>
+                                    <div>{{ event?.location }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penyelenggara</div>
-                                    <div>{{ data?.organizer }}</div>
+                                    <div>{{ event?.organizer }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
@@ -82,11 +139,11 @@ nav.active = 'event';
                                 <div>
                                     <div class="font-semibold">Jadwal Acara</div>
                                     <div>
-                                        {{ formatDate(data?.startDate as Date) }}
-                                        ({{ formatTime(data?.startDate as Date) }})
+                                        {{ formatDate(event?.startDate as Date) }}
+                                        ({{ formatTime(event?.startDate as Date) }})
                                         -
-                                        {{ formatDate(data?.endDate as Date) }}
-                                        ({{ formatTime(data?.endDate as Date) }})
+                                        {{ formatDate(event?.endDate as Date) }}
+                                        ({{ formatTime(event?.endDate as Date) }})
                                     </div>
                                 </div>
                             </div>
@@ -94,21 +151,21 @@ nav.active = 'event';
                                 <i class="bi bi-ticket-perforated text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Harga Tiket</div>
-                                    <div>{{ data?.price ? formatNumber(data.price) : 'Gratis' }}</div>
+                                    <div>{{ event?.price ? formatNumber(event.price) : 'Gratis' }}</div>
                                 </div>
                             </div>
-                            <div class="flex gap-3 mt-4" v-if="data?.buyMethod">
+                            <div class="flex gap-3 mt-4" v-if="event?.buyMethod">
                                 <i class="bi bi-patch-question text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Cara membeli</div>
-                                    <div>{{ data?.buyMethod }}</div>
+                                    <div>{{ event?.buyMethod }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-eye text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Dilihat</div>
-                                    <div>{{ data?.view }} orang</div>
+                                    <div>{{ event?.view }} orang</div>
                                 </div>
                             </div>
                         </div>
@@ -138,19 +195,25 @@ nav.active = 'event';
                             <div class="w-full">
                                 <div class="w-full">
                                     <textarea class="w-full px-3  py-2 border-round-lg comment-input" rows="3"
-                                        placeholder="Tambahkan komentar"></textarea>
+                                        placeholder="Tambahkan komentar" v-model="inputComment"></textarea>
                                 </div>
                                 <div class="mt-1">
-                                    <button class="comment-send-btn">Kirim</button>
+                                    <button class="comment-send-btn" @click="addComment">Kirim</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <CommentMain />
-                    <div class="text-center">
-                        <button class="see-all-comment-btn">Lihat komentar Lainnya</button>
+                    <CommentMain :limit="limit" :comments="event?.comment" />
+                    <div class="flex justify-content-center">
+                        <LoadingSpinner v-if="isLoading" />
+                    </div>
+                    <div class="text-center" v-if="!isLoading && (limit < (event?.comment.length ?? 0))">
+                        <button class="see-all-comment-btn" @click="seeMoreClick">Lihat {{
+                            Math.max((event?.comment.length ??
+                                0) - limit, 0)
+                        }} komentar Lainnya</button>
                     </div>
                 </section>
                 <section class="mt-4 mb-5">
@@ -166,7 +229,7 @@ nav.active = 'event';
 
                         </div>
                         <div class="mt-2">
-                            <button class="report-send-btn">Kirim</button>
+                            <button class="report-send-btn" @click="reportSend">Kirim</button>
                             <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
                         </div>
                     </PrimeDialog>
@@ -408,6 +471,14 @@ nav.active = 'event';
     outline: none;
 }
 
+.img-event {
+    aspect-ratio: 3/2;
+}
+
+.comment-input {
+    border: solid 1px;
+}
+
 @media (max-width: 992px) {
     .grid-hero>div:nth-child(1) {
         grid-column: 1/-1;
@@ -419,11 +490,6 @@ nav.active = 'event';
         grid-column: 1 / -1;
         grid-row: 1;
     }
-}
-
-
-.img-event {
-    aspect-ratio: 3/2;
 }
 
 @media screen and (max-width: 576px) {

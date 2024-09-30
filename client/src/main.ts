@@ -6,10 +6,18 @@ import App from "./App.vue";
 import router from "./router";
 import ToastService from "primevue/toastservice";
 import Aura from "@primevue/themes/aura";
+import { definePreset } from "@primevue/themes";
 const app = createApp(App);
+const preset = definePreset(Aura,{
+  components: {
+    toast: {
+      width: 'clamp(20rem,20vw + 10rem,25rem)'
+    }
+  }
+});
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: preset,
     options: {
       cssLayer: {
         name: "primevue",
@@ -17,6 +25,7 @@ app.use(PrimeVue, {
       },
       darkModeSelector: ".app-dark",
     },
+    
   },
 });
 app.use(ToastService);

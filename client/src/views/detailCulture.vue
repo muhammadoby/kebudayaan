@@ -5,17 +5,23 @@ import type { ComponentExposed } from 'vue-component-type-helpers';
 import type ImgDetail from '@/components/ImgDetail.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { cultureStore } from '@/stores/cultureStore';
+import { useToast } from 'primevue/usetoast';
+import { userStore } from '@/stores/userStore';
+import ShareDialog from '@/components/ShareDialog.vue';
 
+const toast = useToast();
 const loadImage = (imgName: string) => {
     return new URL(`/src/assets/image/home/${imgName}`, import.meta.url).toString();
 };
+const userData = userStore();
 const cultureData = cultureStore();
 const router = useRouter();
 const route = useRoute();
-const data = cultureData.getDataById(parseInt(route.params.id as string));
-if (!data) {
+const culture = cultureData.getDataById(parseInt(route.params.id as string));
+if (!culture) {
     router.replace('/notfound');
 }
+const isLoading = ref(false);
 const relatedCulture = cultureData.data.slice(0, 2);
 const dataImage = ref([
     loadImage('grid-img1.jpg'),
@@ -47,36 +53,90 @@ const carouselResponsiveOptions = ref([
         numScroll: 1
     }
 ]);
+const seeMoreClick = () => {
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+        limit.value = limit.value + perPage;
+    }, 2000);
+}
+const perPage = 3;
+const limit = ref(perPage);
 const imageClick = (index: number) => {
     imgDetail.value?.setIndex(index);
     imgDetail.value?.toggleActive(true);
 };
+const inputComment = defineModel<string>('inputComment');
+const addComment = () => {
+    if (!inputComment.value) {
+        return;
+    }
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses menambahkan komentar',
+        life: 3000
+    });
+    cultureData.addComment(culture?.id as number, inputComment.value);
+    inputComment.value = '';
 
+}
+const shareDialogVisibility = ref(false);
+const reportSend = () => {
+    toast.add({
+        severity: 'success',
+        summary: 'Sukses',
+        detail: 'Sukses melaporkan tulisan',
+        life: 3000
+    });
+    hideReportDialog();
+}
+const addBookmark = () => {
+    userData.addBookmark(culture?.id as number);
+}
+const removeBookmark = () => {
+    userData.removeBookmark(culture?.id as number);
+}
+
+const showShareDialog = () => {
+    shareDialogVisibility.value = true;
+}
+const getCurrentUrl = () => {
+    return new URL(route.fullPath, import.meta.url).href;
+}
 </script>
 <template>
+    <PrimeToast />
     <ImgDetail :img="dataImage" ref="imgDetail" />
     <section class="hero xl:h-screen flex align-items-center" :style="{ '--padding-top': `${nav.height}px` }">
         <div class="container-full ">
             <div class="grid-hero">
                 <div class="flex align-items-end h-full pb-6 sm:pb-8">
                     <div>
-                        <h1 class="text-white font-semibold mb-0 hero-text-title">{{ data?.name }}</h1>
-                        <div class="text-xl text-white font-medium">oleh {{ data?.writter }}</div>
+                        <h1 class="text-white font-semibold mb-0 hero-text-title">{{ culture?.name }}</h1>
+                        <div class="text-xl text-white font-medium">oleh {{ culture?.writter }}</div>
                         <div class="flex text-blue mt-4 gap-4">
                             <div class="flex gap-2 align-items-center">
+                                <ShareDialog :url="getCurrentUrl()" v-model:visibility="shareDialogVisibility" />
                                 <i class="bi bi-share-fill text-xl"></i>
-                                <div class="hidden sm:block">Bagikan</div>
+                                <button class="btn-transparent hidden sm:block"
+                                    @click="showShareDialog">Bagikan</button>
                             </div>
-                            <div class="flex gap-2 align-items-center">
+                            <button class="btn-transparent flex gap-2 align-items-center" @click="addBookmark"
+                                v-if="!userData.hasBookmark(culture?.id as number)">
                                 <i class="bi bi-bookmark-fill text-xl"></i>
                                 <div class="hidden sm:block">Tambahkan ke bookmark</div>
-                            </div>
-
+                            </button>
+                            <button class="btn-transparent flex gap-2 align-items-center" @click="removeBookmark"
+                                v-if="userData.hasBookmark(culture?.id as number)">
+                                <i class="bi bi-bookmark-check text-xl"></i>
+                                <div class="hidden sm:block">Hapus dari bookmark</div>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="relative">
-                    <img :src="data?.image" class="w-full grid-hero-img px-1" alt="hero image" />
+                    <img :src="culture?.image" class="w-full grid-hero-img px-1" alt="hero image" />
                     <div class="darken-gradient"></div>
                 </div>
             </div>
@@ -105,9 +165,9 @@ const imageClick = (index: number) => {
                             </svg>
                         </template>
                         <template #item="props">
-                            <div class="px-2" @click="imageClick(props.index)">
+                            <button class="btn-transparent px-2" @click="imageClick(props.index)">
                                 <img :src="props.data" class="w-full bright border-round-md" alt="carousel image" />
-                            </div>
+                            </button>
                         </template>
                         <template #nexticon>
                             <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px"
@@ -121,7 +181,7 @@ const imageClick = (index: number) => {
                 <section class="about-culture">
                     <h1 class="main-title font-semibold mt-6 mb-3">Tentang Kebudayaan</h1>
                     <div class="about-culture-content line-height-3">
-                        {{ data?.description }}
+                        {{ culture?.description }}
                     </div>
                 </section>
                 <section class="information">
@@ -132,28 +192,28 @@ const imageClick = (index: number) => {
                                 <i class="bi bi-geo-alt text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Asal budaya</div>
-                                    <div>{{ data?.location }}</div>
+                                    <div>{{ culture?.location }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-pen text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Penulis</div>
-                                    <div>{{ data?.writter }}</div>
+                                    <div>{{ culture?.writter }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-calendar text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Tanggal dibuat</div>
-                                    <div>{{ new Intl.DateTimeFormat('id').format(data?.date) }}</div>
+                                    <div>{{ new Intl.DateTimeFormat('id').format(culture?.date) }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-3 mt-4">
                                 <i class="bi bi-eye text-xl"></i>
                                 <div>
                                     <div class="font-semibold">Dilihat</div>
-                                    <div>{{ data?.view }} orang</div>
+                                    <div>{{ culture?.view }} orang</div>
                                 </div>
                             </div>
                         </div>
@@ -178,24 +238,31 @@ const imageClick = (index: number) => {
                     <div>
                         <div class="flex gap-3 ">
                             <div class="comment-profile-pic">
-                                <img src="@/assets/image/home/grid-img1.jpg" width="32" height="32" />
+                                <img :src="userData.user.avatar" width="32" height="32" />
                             </div>
                             <div class="w-full">
                                 <div class="w-full">
                                     <textarea class="w-full px-3  py-2 border-round-lg comment-input" rows="3"
-                                        placeholder="Tambahkan komentar"></textarea>
+                                        v-model="inputComment" placeholder="Tambahkan komentar"></textarea>
                                 </div>
                                 <div class="mt-1">
-                                    <button class="comment-send-btn">Kirim</button>
+                                    <button class="comment-send-btn" @click="addComment">Kirim</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <CommentMain />
-                    <div class="text-center">
-                        <button class="see-all-comment-btn">Lihat komentar Lainnya</button>
+                    <CommentMain :limit="limit" :comments="culture?.comment" />
+                    <div class="flex justify-content-center">
+                        <LoadingSpinner v-if="isLoading" />
+                    </div>
+                    <div class="text-center" v-if="!isLoading && (limit < (culture?.comment.length ?? 0))">
+                        <button @click="seeMoreClick" class="see-all-comment-btn">
+                            Lihat {{
+                                Math.max((culture?.comment.length ??
+                                    0) - limit, 0)
+                            }} komentar Lainnya </button>
                     </div>
                 </section>
                 <section class="mt-4 mb-5">
@@ -211,7 +278,7 @@ const imageClick = (index: number) => {
 
                         </div>
                         <div class="mt-2">
-                            <button class="report-send-btn">Kirim</button>
+                            <button class="report-send-btn" @click="reportSend">Kirim</button>
                             <button class="report-cancel-btn ml-3" @click="hideReportDialog">Batal</button>
                         </div>
                     </PrimeDialog>
@@ -230,7 +297,7 @@ const imageClick = (index: number) => {
                             <RouterLink :to="`/culture/${data.id}`" class="flex  gap-2">
                                 <div>
                                     <img :src="data.image" width="80" :alt="`image ${data.name}`"
-                                        class="border-round-md" />
+                                        class="border-round-md img-culture" />
 
                                 </div>
                                 <div>
@@ -427,6 +494,14 @@ const imageClick = (index: number) => {
 .comment-profile-pic>img {
     border-radius: 50%;
     object-fit: cover;
+}
+
+.comment-input {
+    border: solid 1px;
+}
+
+.img-culture {
+    aspect-ratio: 3/2;
 }
 
 @media (max-width: 992px) {
